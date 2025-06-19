@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb'; // your DB connection
 import { Profile } from '@/models/Profile'; // your model
+import bcrypt from 'bcryptjs';
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,6 +13,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Profile already exists' }, { status: 400 });
     }
 
+    if (body.password) {
+      const hashedPassword = await bcrypt.hash(body.password, 10);
+      body.password = hashedPassword;
+    }
     const profile = new Profile(body);
     await profile.save();
 
@@ -21,4 +26,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }
 }
-

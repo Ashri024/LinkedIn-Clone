@@ -3,8 +3,9 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IProfile extends Document {
   authProvider: 'google' | 'credentials';
   email: string;
-  phoneNumber: string;
-  passwordHash?: string;
+  phone: string;
+  country: string;
+  password?: string;
 
   firstName: string;
   lastName: string;
@@ -39,8 +40,9 @@ export interface IProfile extends Document {
 const ProfileSchema = new Schema<IProfile>({
   authProvider: { type: String, enum: ['google', 'credentials'], required: true },
   email:        { type: String, required: true, unique: true },
-  phoneNumber:  { type: String, required: true, unique: true },
-  passwordHash: { type: String },
+  phone:  { type: String, required: true, unique: true },
+  country:      { type: String, required: true },
+  password: { type: String },
 
   firstName:    { type: String, required: true },
   lastName:     { type: String, required: true },
