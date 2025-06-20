@@ -1,9 +1,10 @@
+import LoaderComponent from '@/components/LoaderComponent';
 import React from 'react'
-
-const loading = () => {
+function Loader() {
   return (
-    <div>loading</div>
+<LoaderComponent text="Loading..."/>
+  
   )
 }
 
-export default loading
+export default Loader

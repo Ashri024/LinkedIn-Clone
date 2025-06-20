@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
-import { FcGoogle } from "react-icons/fc";
+import { SignUpForm } from '@/components/auth/signup/SignUpForm';
+import { SignUpGoogle } from '@/components/auth/signup/SignUpGoogle';
+import LoaderComponent from '@/components/LoaderComponent';
 
 export default function SignUpPage() {
   const { data: session } = useSession();
@@ -21,7 +20,7 @@ export default function SignUpPage() {
   const setSignUpMode = useAuthStore((state) => state.setSignUpMode);
 
   useEffect(() => {
-    setAuthData({ email: '', password: '' }); // reset on mount
+    setAuthData({ email: '', password: '' });
   }, [setAuthData]);
 
   const checkUserProfile = async (email: string) => {
@@ -34,7 +33,8 @@ export default function SignUpPage() {
     return data.exists;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setFormErrors({});
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
     const isValidPassword = form.password.length >= 6;
@@ -71,80 +71,38 @@ export default function SignUpPage() {
     checkAndRedirect();
   }, [session, router]);
 
+  if (loading){
+    return <LoaderComponent text='Checking Profile... Sign up page'/>
+  }
+
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">
-      <div className="w-full max-w-sm space-y-6 p-6 rounded-lg shadow  bg-white dark:bg-backgroundC-dark">
-        <h1 className="text-2xl font-semibold text-center">Join LinkedIn now — it&apos;s free!</h1>
+      <div className="w-full max-w-sm space-y-6 p-6 rounded-lg shadow bg-white dark:bg-backgroundC-dark">
+        <h1 className="text-2xl font-semibold text-center">
+          Join LinkedIn now — it&apos;s free!
+        </h1>
 
-        <div className="space-y-2">
-          <Input
-            type="email"
-            placeholder="Email or phone number"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-          {formErrors.email && <p className="text-sm text-red-500">{formErrors.email}</p>}
+        <SignUpForm
+          email={form.email}
+          password={form.password}
+          formErrors={formErrors}
+          onEmailChange={(val) => setForm({ ...form, email: val })}
+          onPasswordChange={(val) => setForm({ ...form, password: val })}
+          onSubmit={handleSubmit}
+        />
 
-          <Input
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
-          {formErrors.password && <p className="text-sm text-red-500">{formErrors.password}</p>}
-        </div>
-
-        <p className="text-xs text-center text-muted-foreground">
-          By clicking Continue, you agree to the LinkedIn{' '}
-          <Link href="#" className="text-blue-600 hover:underline">
-            User Agreement
-          </Link>
-          ,{' '}
-          <Link href="#" className="text-blue-600 hover:underline">
-            Privacy Policy
-          </Link>{' '}
-          and{' '}
-          <Link href="#" className="text-blue-600 hover:underline">
-            Cookie Policy
-          </Link>
-          .
-        </p>
-
-        <Button
-          className="w-full "
-          onClick={handleSubmit}
-        >
-          Agree & Join
-        </Button>
-
-        <div className="flex items-center justify-center gap-2 text-sm ">
+        <div className="flex items-center justify-center gap-2 text-sm">
           <div className="h-px flex-1 object-theme" />
           <span>or</span>
           <div className="h-px flex-1 object-theme" />
         </div>
 
-        <Button
-          variant="outline"
-          className="w-full border-slate-500 "
-          onClick={() => {
+        <SignUpGoogle
+          onGoogleClick={() => {
             setSignUpMode('google');
             signIn('google');
           }}
-        >
-          <FcGoogle className="mr-0 size-5" />
-          Continue with Google
-        </Button>
-
-        <p className="text-center text-sm">
-          Already on LinkedIn?{' '}
-          <Link href="/auth/signin" className="text-purple-600 hover:underline">
-            Sign in
-          </Link>
-        </p>
-
-        {loading && (
-          <p className="text-sm text-center text-muted-foreground">Checking profile...</p>
-        )}
+        />
       </div>
     </div>
   );

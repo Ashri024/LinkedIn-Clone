@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
 
-interface SafeUser {
+export interface SafeUser {
   _id: string;
   email: string;
   password: string;

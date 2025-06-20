@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type SignUpMode = 'google' | 'credentials' | null;
+export type SignUpMode = 'google' | 'credentials' | null;
 
 interface AuthStore {
   email: string;
