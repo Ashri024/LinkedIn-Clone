@@ -6,6 +6,7 @@ export interface IProfile extends Document {
   phone: string;
   country: string;
   password?: string;
+  authStep: number; // Optional field to track onboarding step
 
   firstName: string;
   lastName: string;
@@ -43,6 +44,7 @@ const ProfileSchema = new Schema<IProfile>({
   phone:  { type: String, required: true, unique: true },
   country:      { type: String, required: true },
   password: { type: String },
+  authStep:     { type: Number, default: 1 }, // Default to step 1 for onboarding
 
   firstName:    { type: String, required: true },
   lastName:     { type: String, required: true },

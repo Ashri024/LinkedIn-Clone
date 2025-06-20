@@ -1,10 +1,9 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 
 interface StepOneProps {
@@ -17,7 +16,7 @@ export default function StepOne({ onNext }: StepOneProps) {
     trigger,
     formState: { errors },
   } = useFormContext();
-  const signUpMode = useAuthStore((state) => state.signUpMode);
+  const {data:session} = useSession();
   const router = useRouter();
   const handleNext = async () => {
     const valid = await trigger(['email', 'firstName', 'lastName']);
@@ -25,7 +24,8 @@ export default function StepOne({ onNext }: StepOneProps) {
   };
 
   const handleBack = () => {
-    if (signUpMode === 'google') {
+    console.log("SIgnUp Mode:", session?.user);
+    if (session?.user.authProvider === 'google') {
       signOut();
     } else {
       router.push('/auth/signup');
