@@ -43,24 +43,27 @@ export default function SignUpPage() {
 
     if (!isValidEmail) {
       setFormErrors((prev) => ({ ...prev, email: 'Invalid email address' }));
+      setSubmitting(false);
       return;
     }
 
     if (!isValidPassword) {
       setFormErrors((prev) => ({ ...prev, password: 'Password must be at least 6 characters' }));
+      setSubmitting(false);
       return;
     }
 
     const exists = await checkUserProfile(form.email);
     if (exists) {
       setFormErrors((prev) => ({ ...prev, email: 'User already exists' }));
+      setSubmitting(false);
       return;
     }
 
     setAuthData(form);
     setSignUpMode('credentials');
-    router.push('/auth/onboarding');
     setSubmitting(false);
+    router.push('/auth/onboarding');
   };
 
   useEffect(() => {

@@ -16,6 +16,7 @@ interface SignInFormProps {
   onEmailChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
   onSubmit: (e: FormEvent<HTMLButtonElement>) => void;
+  generalError?: string;
 }
 
 export function SignInForm({
@@ -26,6 +27,7 @@ export function SignInForm({
   onEmailChange,
   onPasswordChange,
   onSubmit,
+  generalError
 }: SignInFormProps) {
   return (
     <div className="space-y-6">
@@ -45,6 +47,7 @@ export function SignInForm({
           onChange={(e) => onPasswordChange(e.target.value)}
         />
         {formErrors.password && <p className="text-sm text-red-500">{formErrors.password}</p>}
+        {generalError && <p className="text-red-500 text-sm">{generalError}</p>}
       </div>
       
         <Button onClick={onSubmit} className="w-full" disabled={loading}>

@@ -41,9 +41,8 @@ export async function runCheckAndRedirect({
 
     const data = await res.json();
 
-    if (data.exists) {
-      router.replace('/');
-    } else {
+    if (data.status === 0) {
+      // New user – show onboarding form
       setPrefillData({
         email: userEmail,
         firstName: session?.user?.firstName || '',
@@ -51,8 +50,14 @@ export async function runCheckAndRedirect({
         password: userPassword || undefined,
       });
       setCheckingUserStatus(false);
+    } else if (data.status === 1) {
+      router.replace('/auth/onboarding/more-details');
+    } else if (data.status === 2) {
+      router.replace('/');
+    } else {
+      console.warn('Unknown user status code:', data.status);
     }
   } catch (err) {
-    console.error('Error checking profile:', err);
+    console.error('Error checking user status:', err);
   }
 }

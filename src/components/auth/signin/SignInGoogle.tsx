@@ -7,18 +7,15 @@ import Link from 'next/link';
 
 interface SignInGoogleProps {
   onGoogleClick: () => void;
-  generalError?: string;
 }
 
-export function SignInGoogle({ onGoogleClick, generalError }: SignInGoogleProps) {
+export function SignInGoogle({ onGoogleClick }: SignInGoogleProps) {
   return (
     <>
       <Button variant="outline" className="w-full border-slate-500" onClick={onGoogleClick}>
         <FcGoogle className="mr-0 size-5" />
         Continue with Google
       </Button>
-
-      {generalError && <p className="text-red-500 text-sm text-center">{generalError}</p>}
 
       <p className="text-xs text-center text-muted-foreground">
         By continuing, you agree to the LinkedIn{' '}

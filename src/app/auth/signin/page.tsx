@@ -65,6 +65,7 @@ export default function SignInPage() {
           onEmailChange={(val) => setForm({ ...form, email: val })}
           onPasswordChange={(val) => setForm({ ...form, password: val })}
           onSubmit={handleCredentialsLogin}
+          generalError={formErrors.general}
         />
 
         <div className="flex items-center justify-center gap-2 text-sm">
@@ -74,7 +75,6 @@ export default function SignInPage() {
         </div>
         <SignInGoogle
           onGoogleClick={() => signIn('google')}
-          generalError={formErrors.general}
         />
       </div>
     </div>
