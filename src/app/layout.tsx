@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import AuthSessionProvider from './providers/SessionProvider';
+import { ThemeProvider } from "next-themes";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
@@ -25,14 +22,14 @@ export default async function RootLayout({
 }>) {
 
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" suppressHydrationWarning={true}>
+    <body className={`${roboto.variable} font-roboto antialiased`} suppressHydrationWarning>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <AuthSessionProvider>
           {children}
         </AuthSessionProvider>
-      </body>
-    </html>
+      </ThemeProvider>
+    </body>
+  </html>
   );
 }
