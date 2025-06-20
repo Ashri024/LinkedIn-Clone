@@ -1,54 +1,59 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
-interface Props {
+interface StepTwoProps {
   onBack: () => void;
   isSubmitting: boolean;
 }
 
-export default function StepTwo({ onBack, isSubmitting }: Props) {
+export default function StepTwo({ onBack, isSubmitting }: StepTwoProps) {
   const {
     register,
     formState: { errors }
   } = useFormContext();
 
   return (
-    <div className="space-y-4" >
-      <div>
-        <label>Phone Number</label>
-        <input
-          {...register('phone')}
-          className="input w-full"
-          placeholder="10-digit number"
-        />
-       {typeof errors.phone?.message === 'string' && ( <p className="text-red-500 text-sm">{errors.phone.message}</p> )}
+    <div className="space-y-6">
+      <div className="space-y-2">
+        {/* Phone */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="phone" className="text-sm font-medium">
+            Phone Number
+          </label>
+          <Input
+            id="phone"
+            placeholder="10-digit number"
+            {...register('phone')}
+          />
+          {typeof errors.phone?.message === 'string' && (
+            <p className="text-sm text-red-500">{errors.phone.message}</p>
+          )}
+        </div>
+
+        {/* Country */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="country" className="text-sm font-medium">
+            Country
+          </label>
+          <Input id="country" {...register('country')} />
+          {typeof errors.country?.message === 'string' && (
+            <p className="text-sm text-red-500">{errors.country.message}</p>
+          )}
+        </div>
       </div>
 
-      <div>
-        <label>Country</label>
-        <input {...register('country')} className="input w-full" />
-        {typeof errors.country?.message === 'string' && ( <p className="text-red-500 text-sm">{errors.country.message}</p> )}
-      </div>
-
-      <div className="flex justify-between mt-4">
-        <button
-          type="button"
-          className="btn bg-gray-300 text-black px-4 py-2 rounded"
-          onClick={onBack}
-        >
+      {/* Action Buttons */}
+      <div className="flex justify-between">
+        <Button variant="outline" type="button" onClick={onBack}>
           Back
-        </button>
-        <button
-          type="submit"
-          className="btn bg-green-600 text-white px-4 py-2 rounded disabled:bg-gray-500 hover:bg-green-900"
-          disabled={isSubmitting}
-        >
+        </Button>
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Submit'}
-        </button>
+        </Button>
       </div>
     </div>
   );
 }
-
-

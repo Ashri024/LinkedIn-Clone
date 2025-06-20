@@ -14,6 +14,7 @@ interface SignUpFormProps {
   onEmailChange: (val: string) => void;
   onPasswordChange: (val: string) => void;
   onSubmit: (e: FormEvent<HTMLButtonElement>) => void;
+  submitting: boolean;
 }
 
 export function SignUpForm({
@@ -23,6 +24,7 @@ export function SignUpForm({
   onEmailChange,
   onPasswordChange,
   onSubmit,
+  submitting
 }: SignUpFormProps) {
   return (
     <div className='space-y-6'>
@@ -51,8 +53,10 @@ export function SignUpForm({
             <a href="#" className="text-blue-600 hover:underline">Cookie Policy</a>.
         </p>
 
-        <Button className="w-full" onClick={onSubmit}>
+        <Button className="w-full" onClick={onSubmit} disabled={submitting}>
+        <span className={submitting ? 'animate-pulse' : ''}>
             Agree & Join
+        </span>
         </Button>
     </div>
   );

@@ -6,22 +6,23 @@ import { FaSun, FaMoon } from 'react-icons/fa';
 import { useTheme } from 'next-themes';
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // Ensure rendering happens only on client
-  }, []);
+    setMounted(true);
+    console.log('Resolved theme:', resolvedTheme);
+  }, [resolvedTheme]);
 
   if (!mounted) return null;
 
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
-    <Button
-      variant="ghost"
-      className="p-2"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-    >
-      {theme === 'dark' ? (
+    <Button variant="ghost" className="p-2" onClick={toggleTheme}>
+      {resolvedTheme === 'dark' ? (
         <FaSun className="text-lg" />
       ) : (
         <FaMoon className="text-lg" />

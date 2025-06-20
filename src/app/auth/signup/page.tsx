@@ -15,6 +15,7 @@ export default function SignUpPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const setAuthData = useAuthStore((state) => state.setAuthData);
   const setSignUpMode = useAuthStore((state) => state.setSignUpMode);
@@ -35,6 +36,7 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setSubmitting(true);
     setFormErrors({});
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
     const isValidPassword = form.password.length >= 6;
@@ -58,6 +60,7 @@ export default function SignUpPage() {
     setAuthData(form);
     setSignUpMode('credentials');
     router.push('/auth/onboarding');
+    setSubmitting(false);
   };
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function SignUpPage() {
   }, [session, router]);
 
   if (loading){
-    return <LoaderComponent text='Checking Profile... Sign up page'/>
+    return <LoaderComponent text='Checking Profile...'/>
   }
 
   return (
@@ -89,6 +92,7 @@ export default function SignUpPage() {
           onEmailChange={(val) => setForm({ ...form, email: val })}
           onPasswordChange={(val) => setForm({ ...form, password: val })}
           onSubmit={handleSubmit}
+          submitting={submitting}
         />
 
         <div className="flex items-center justify-center gap-2 text-sm">

@@ -1,58 +1,82 @@
 'use client';
 
+import { signOut } from 'next-auth/react';
 import { useFormContext } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
+import { useRouter } from 'next/navigation';
 
-export default function StepOne({ onNext }: { onNext: () => void }) {
+interface StepOneProps {
+  onNext: () => void;
+}
+
+export default function StepOne({ onNext }: StepOneProps) {
   const {
     register,
     trigger,
     formState: { errors },
   } = useFormContext();
-  const { signUpMode } = useAuthStore();
-
+  const signUpMode = useAuthStore((state) => state.signUpMode);
+  const router = useRouter();
   const handleNext = async () => {
     const valid = await trigger(['email', 'firstName', 'lastName']);
     if (valid) onNext();
   };
 
+  const handleBack = () => {
+    if (signUpMode === 'google') {
+      signOut();
+    } else {
+      router.push('/auth/signup');
+    }
+  };
+
   return (
-    <div className="space-y-4">
-      <div>
-        <label>Email</label>
-        <input
-          {...register('email')}
-          className="input w-full disabled:bg-gray-200"
-          disabled={signUpMode === 'credentials'}
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm">{errors.email.message as string}</p>
-        )}
-      </div>
+    <div className="space-y-6">
 
-      <div>
-        <label>First Name</label>
-        <input {...register('firstName')} className="input w-full" />
-        {errors.firstName && (
-          <p className="text-red-500 text-sm">{errors.firstName.message as string}</p>
-        )}
-      </div>
+      <div className='space-y-2'>
+        {/* Email */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="email" className="text-sm font-medium">Email</label>
+          <Input
+            id="email"
+            disabled
+            {...register('email')}
+            className="disabled:opacity-70"
+          />
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message as string}</p>
+          )}
+        </div>
 
-      <div>
-        <label>Last Name</label>
-        <input {...register('lastName')} className="input w-full" />
-        {errors.lastName && (
-          <p className="text-red-500 text-sm">{errors.lastName.message as string}</p>
-        )}
-      </div>
+        {/* First Name */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="firstName" className="text-sm font-medium">First Name</label>
+          <Input id="firstName" {...register('firstName')} />
+          {errors.firstName && (
+            <p className="text-sm text-red-500">{errors.firstName.message as string}</p>
+          )}
+        </div>
 
-      <button
-        type="button"
-        onClick={handleNext}
-        className="btn bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Next
-      </button>
+        {/* Last Name */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="lastName" className="text-sm font-medium">Last Name</label>
+          <Input id="lastName" {...register('lastName')} />
+          {errors.lastName && (
+            <p className="text-sm text-red-500">{errors.lastName.message as string}</p>
+          )}
+        </div>
+      </div>
+      {/* Actions */}
+      <div className="flex justify-between">
+        <Button variant="destructive" type="button" onClick={handleBack}>
+          Back
+        </Button>
+        <Button type="button" onClick={handleNext}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 }
