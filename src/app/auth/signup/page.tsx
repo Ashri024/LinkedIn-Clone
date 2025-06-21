@@ -7,14 +7,16 @@ import { useAuthStore } from '@/store/authStore';
 import { SignUpForm } from '@/components/auth/signup/SignUpForm';
 import { SignUpGoogle } from '@/components/auth/signup/SignUpGoogle';
 import LoaderComponent from '@/components/LoaderComponent';
+import { checkUserProfile } from '@/lib/db/frontend/user';
+import toast from 'react-hot-toast'; 
 
 export default function SignUpPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const setAuthData = useAuthStore((state) => state.setAuthData);
@@ -24,16 +26,6 @@ export default function SignUpPage() {
     setAuthData({ email: '', password: '' });
   }, [setAuthData]);
 
-  const checkUserProfile = async (email: string) => {
-    const res = await fetch('/api/profile/check', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    const data = await res.json();
-    return data.exists;
-  };
-
   const handleSubmit = async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setSubmitting(true);
@@ -42,43 +34,59 @@ export default function SignUpPage() {
     const isValidPassword = form.password.length >= 6;
 
     if (!isValidEmail) {
-      setFormErrors((prev) => ({ ...prev, email: 'Invalid email address' }));
+      toast.error('Invalid email address');
       setSubmitting(false);
       return;
     }
-
+    
     if (!isValidPassword) {
-      setFormErrors((prev) => ({ ...prev, password: 'Password must be at least 6 characters' }));
+      toast.error('Password must be at least 6 characters');
       setSubmitting(false);
       return;
     }
-
-    const exists = await checkUserProfile(form.email);
-    if (exists) {
-      setFormErrors((prev) => ({ ...prev, email: 'User already exists' }));
+    
+    try {
+      const exists = await checkUserProfile(form.email);
+      if (exists) {
+        toast.error('User already exists');
+        setSubmitting(false);
+        return;
+      }
+    
+      setAuthData(form);
+      setSignUpMode('credentials');
+      router.push('/auth/onboarding');
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
       setSubmitting(false);
-      return;
     }
-
-    setAuthData(form);
-    setSignUpMode('credentials');
-    setSubmitting(false);
-    router.push('/auth/onboarding');
   };
 
   useEffect(() => {
     const checkAndRedirect = async () => {
-      if (session?.user?.email) {
+      if (status === 'loading') return;
         setLoading(true);
-        const hasProfile = await checkUserProfile(session.user.email);
-        router.replace(hasProfile ? '/' : '/auth/onboarding');
-      }
+        const hasProfile = await checkUserProfile(session?.user.email);
+        console.log('User exists after session check:', hasProfile);
+        if(hasProfile === 1) {
+          router.replace('/auth/onboarding/more-details');
+          return;
+        } else if (hasProfile ===0) {
+          router.replace('/auth/onboarding');
+          return;
+        } else if (hasProfile === 2) {
+          router.replace('/');
+          return;
+        }
+        setLoading(false);
     };
     checkAndRedirect();
-  }, [session, router]);
+  }, [session?.user?.email, router, status]);
 
-  if (loading){
-    return <LoaderComponent text='Checking Profile...'/>
+  if (loading || status === 'loading') {
+    return <LoaderComponent text='Checking Profile Status...'/>
   }
 
   return (

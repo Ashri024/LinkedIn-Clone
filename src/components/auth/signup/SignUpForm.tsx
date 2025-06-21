@@ -27,7 +27,7 @@ export function SignUpForm({
   submitting
 }: SignUpFormProps) {
   return (
-    <div className='space-y-6'>
+    <form className='space-y-6'>
         <div className="space-y-2">
         <Input
             type="email"
@@ -58,6 +58,6 @@ export function SignUpForm({
             Agree & Join
         </span>
         </Button>
-    </div>
+    </form>
   );
 }

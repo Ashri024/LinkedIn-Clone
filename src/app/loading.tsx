@@ -2,7 +2,7 @@ import LoaderComponent from '@/components/LoaderComponent';
 import React from 'react'
 function Loader() {
   return (
-<LoaderComponent text="Loading..."/>
+<LoaderComponent text="Loading. Please Wait..."/>
   
   )
 }

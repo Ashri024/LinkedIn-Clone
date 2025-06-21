@@ -30,7 +30,7 @@ export function SignInForm({
   generalError
 }: SignInFormProps) {
   return (
-    <div className="space-y-6">
+    <form className="space-y-6">
       <div className="space-y-2">
         <Input
           type="email"
@@ -53,6 +53,6 @@ export function SignInForm({
         <Button onClick={onSubmit} className="w-full" disabled={loading}>
           {loading ? 'Signing in...' : 'Sign In'}
         </Button>
-      </div>
+      </form>
   );
 }

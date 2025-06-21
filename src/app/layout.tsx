@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import AuthSessionProvider from './providers/SessionProvider';
 import { ThemeProvider } from "next-themes";
+import { Toaster } from 'react-hot-toast';
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -26,6 +27,7 @@ export default async function RootLayout({
     <body className={`${roboto.variable} font-roboto antialiased`} suppressHydrationWarning>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <AuthSessionProvider>
+        <Toaster position="top-right" />
           {children}
         </AuthSessionProvider>
       </ThemeProvider>

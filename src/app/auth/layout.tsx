@@ -1,7 +1,3 @@
-// app/auth/layout.tsx
-
-'use client';
-
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';

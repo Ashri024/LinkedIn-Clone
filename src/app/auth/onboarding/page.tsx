@@ -30,7 +30,7 @@ export default function OnboardingPage() {
     });
   }, [session, status, router, signUpMode, email, password]);
 
-  if (checkingUserStatus) {
+  if (checkingUserStatus || status === 'loading') {
     return <LoaderComponent text='Onboarding...'/>;
   }
 

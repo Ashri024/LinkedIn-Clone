@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { OnboardingFormData } from '@/lib/validations/onboarding';
 import { Session } from 'next-auth';
 import { SignUpMode } from '@/store/authStore';
+import { IUserExistStatus } from '../backend/user';
 
 type RunCheckProps = {
   email: string | null | undefined;
@@ -33,15 +34,10 @@ export async function runCheckAndRedirect({
   }
 
   try {
-    const res = await fetch('/api/profile/check', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: userEmail }),
-    });
+    
+    const userExistStatus = await checkUserProfile(userEmail);
 
-    const data = await res.json();
-
-    if (data.status === 0) {
+    if (userExistStatus === 0) {
       // New user – show onboarding form
       setPrefillData({
         email: userEmail,
@@ -50,14 +46,31 @@ export async function runCheckAndRedirect({
         password: userPassword || undefined,
       });
       setCheckingUserStatus(false);
-    } else if (data.status === 1) {
+      return;
+    } else if (userExistStatus === 1) {
       router.replace('/auth/onboarding/more-details');
-    } else if (data.status === 2) {
+      return;
+    } else if (userExistStatus === 2) {
       router.replace('/');
+      return;
     } else {
-      console.warn('Unknown user status code:', data.status);
+      console.warn('Unknown user status code:', userExistStatus);
+      return;
     }
   } catch (err) {
     console.error('Error checking user status:', err);
   }
 }
+
+export const checkUserProfile = async (email?: string) => {
+  if (!email) {
+    return -1; // No email provided
+  }
+  const res = await fetch('/api/profile/check', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  const data = await res.json();
+  return data.status as IUserExistStatus;
+};
