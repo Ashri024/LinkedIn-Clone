@@ -56,12 +56,12 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
         password: passwordFromStore,
       });
       if (signInResult?.ok) {
-        router.push('/');
+        router.push('/auth/onboarding/more-details');
       } else {
         alert('Sign in failed after registration');
       }
     } else {
-      router.push('/');
+      router.push('/auth/onboarding/more-details');
     }
   };
 
