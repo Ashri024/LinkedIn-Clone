@@ -1,20 +1,21 @@
 'use client';
 
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useContext } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { SignUpForm } from '@/components/auth/signup/SignUpForm';
 import { SignUpGoogle } from '@/components/auth/signup/SignUpGoogle';
+import { UserStatusContext } from '@/lib/context/UserStatusContext';
 import LoaderComponent from '@/components/LoaderComponent';
 
 export default function SignUpPage() {
-  const { data: session } = useSession();
+  const { data: session , status} = useSession();
   const router = useRouter();
+  const { userStatus } = useContext(UserStatusContext);
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const setAuthData = useAuthStore((state) => state.setAuthData);
@@ -23,6 +24,15 @@ export default function SignUpPage() {
   useEffect(() => {
     setAuthData({ email: '', password: '' });
   }, [setAuthData]);
+
+  // 👇 Redirect if session already exists and user has completed onboarding
+  useEffect(() => {
+    if (userStatus === 2) router.replace('/');
+    if (userStatus === 1) router.replace('/auth/onboarding/more-details');
+    if (userStatus === 0 && session?.user?.email) {
+      router.replace('/auth/onboarding');
+    }
+  }, [userStatus, router, session]);
 
   const checkUserProfile = async (email: string) => {
     const res = await fetch('/api/profile/check', {
@@ -66,20 +76,7 @@ export default function SignUpPage() {
     router.push('/auth/onboarding');
   };
 
-  useEffect(() => {
-    const checkAndRedirect = async () => {
-      if (session?.user?.email) {
-        setLoading(true);
-        const hasProfile = await checkUserProfile(session.user.email);
-        router.replace(hasProfile ? '/' : '/auth/onboarding');
-      }
-    };
-    checkAndRedirect();
-  }, [session, router]);
-
-  if (loading){
-    return <LoaderComponent text='Checking Profile...'/>
-  }
+  if (status === 'loading' || userStatus==null) return <LoaderComponent text="Loading..." />;
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">

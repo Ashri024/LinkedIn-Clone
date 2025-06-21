@@ -3,7 +3,7 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OnboardingFormData, OnboardingSchema } from '@/lib/validations/onboarding';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
@@ -30,6 +30,7 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
   });
 
   const onSubmitFinal = async (data: OnboardingFormData) => {
+    console.log('Final Data:', data);
     const res = await fetch('/api/profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -55,14 +56,28 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
         password: passwordFromStore,
       });
       if (signInResult?.ok) {
-        router.push('/');
+        router.push('/auth/onboarding/more-details');
       } else {
         alert('Sign in failed after registration');
       }
     } else {
-      router.push('/');
+      router.push('/auth/onboarding/more-details');
     }
   };
+
+  useEffect(() => {
+    console.log("Prefill Data:", prefillData);
+    methods.reset({
+      ...prefillData,
+      password: prefillData.password || undefined,
+      firstName: prefillData.firstName || '',
+      lastName: prefillData.lastName || '',
+      email: prefillData.email || '',
+      country: prefillData.country || '',
+      phone: prefillData.phone || '',
+    });
+  }
+, [methods, prefillData]);
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">

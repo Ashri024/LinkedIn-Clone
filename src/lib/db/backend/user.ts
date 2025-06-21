@@ -1,10 +1,10 @@
 // lib/db/user.ts
+import { UserExistStatus } from '@/lib/context/UserStatusContext';
 import { connectDB } from '@/lib/mongodb';
 import { Profile, IProfile } from '@/models/Profile';
 
-export async function userExistStatus(email: string): Promise<number> {
-  if (!email) return -1;
-
+export async function userExistStatus(email?: string): Promise<UserExistStatus> {
+  if (!email) return -1; // Invalid email input
   await connectDB(); // ensures DB is connected
 
   const user = await Profile.findOne({ email }) as IProfile | null;

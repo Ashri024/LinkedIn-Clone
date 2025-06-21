@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface StepOneProps {
   onNext: () => void;
@@ -31,7 +32,10 @@ export default function StepOne({ onNext }: StepOneProps) {
       router.push('/auth/signup');
     }
   };
-
+useEffect(() => {
+  console.log("Register: ", {...register('email')});
+}
+, [register]);
   return (
     <div className="space-y-6">
 
