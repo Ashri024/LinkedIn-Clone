@@ -31,6 +31,7 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
   });
 
   const onSubmitFinal = async (data: OnboardingFormData) => {
+    console.log('Final form data:', data);
     try {
       const res = await fetch('/api/profile', {
         method: 'POST',
@@ -94,15 +95,6 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
       <div className="w-full max-w-md space-y-6 p-6 rounded-lg shadow bg-white dark:bg-backgroundC-dark">
         <h1 className="text-2xl font-semibold text-center">Complete Your Profile</h1>
         <FormProvider {...methods}>
-          {/* <form onSubmit={methods.handleSubmit(onSubmitFinal)} className="space-y-4">
-            {step === 1 && <StepOne onNext={() => setStep(2)} />}
-            {step === 2 && (
-              <StepTwo
-                onBack={() => setStep(1)}
-                isSubmitting={methods.formState.isSubmitting}
-              />
-            )}
-          </form> */}
           <form onSubmit={methods.handleSubmit(onSubmitFinal)} className="space-y-4">
             <div style={{ display: step === 1 ? 'block' : 'none' }}>
               <StepOne onNext={() => setStep(2)} />

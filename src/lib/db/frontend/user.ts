@@ -50,8 +50,8 @@ export async function runCheckAndRedirect({
     } else if (userExistStatus === 1) {
       router.replace('/auth/onboarding/more-details');
       return;
-    } else if (userExistStatus === 2) {
-      router.replace('/');
+    } else if (userExistStatus === 5) {
+      router.replace('/profile');
       return;
     } else {
       console.warn('Unknown user status code:', userExistStatus);

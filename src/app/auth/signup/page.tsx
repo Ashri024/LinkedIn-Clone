@@ -76,8 +76,8 @@ export default function SignUpPage() {
         } else if (hasProfile ===0) {
           router.replace('/auth/onboarding');
           return;
-        } else if (hasProfile === 2) {
-          router.replace('/');
+        } else if (hasProfile === 5) {
+          router.replace('/profile');
           return;
         }
         setLoading(false);

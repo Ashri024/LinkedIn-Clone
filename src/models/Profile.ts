@@ -3,10 +3,11 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IProfile extends Document {
   authProvider: 'google' | 'credentials';
   email: string;
+  emailVerified: boolean; // Optional, can be used to track if email is verified
   phone: string;
-  country: string;
   password?: string;
-  authStep: number; // Optional field to track onboarding step
+  authStep: -1| 0 | 1 | 2 | 3 | 4 | 5; // -1 for no session, 0 for no user, 1 for basic info, 2 for more details, etc.
+  isStudent?: boolean; // Optional, can be used to track if the user is a student
 
   firstName: string;
   lastName: string;
@@ -14,6 +15,7 @@ export interface IProfile extends Document {
   bannerImageUrl?: string;
   headline?: string;
   about?: string;
+  lookingForJob?: ["yes", "no", "maybe"]; // Optional, can be used to track job seeking status
 
   pronouns?: 'he/him' | 'she/her' | 'they/them' | 'other';
   location?: {
@@ -41,10 +43,12 @@ export interface IProfile extends Document {
 const ProfileSchema = new Schema<IProfile>({
   authProvider: { type: String, enum: ['google', 'credentials'], required: true },
   email:        { type: String, required: true, unique: true },
+  emailVerified: { type: Boolean, default: false },
   phone:  { type: String, required: true, unique: true },
-  country:      { type: String, required: true },
   password: { type: String },
   authStep:     { type: Number, default: 1 }, // Default to step 1 for onboarding
+  isStudent:    { type: Boolean, default: false },
+  lookingForJob: { type: [String], enum: ['yes', 'no', 'maybe'], default: ['yes'] },
 
   firstName:    { type: String, required: true },
   lastName:     { type: String, required: true },

@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
+import { AdapterUser } from "next-auth/adapters";
 
 export interface SafeUser {
   _id: string;
@@ -14,49 +15,13 @@ export interface SafeUser {
   profileImageUrl?: string;
 }
 
-// export const authOptions: AuthOptions = {
-//   providers: [
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID!,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-//     }),
-//   ],
-//   session: {
-//     strategy: 'jwt',
-//   },
-//   callbacks: {
-//     async jwt({ token, account, profile }) {
-//       if (account && profile) {
-//         const googleProfile = profile as {
-//           given_name?: string;
-//           family_name?: string;
-//           email?: string;
-//           picture?: string;
-//         };
-
-//         token.firstName = googleProfile.given_name || '';
-//         token.lastName = googleProfile.family_name || '';
-//         token.email = googleProfile.email || '';
-//         token.image = googleProfile.picture || '';
-//       }
-//       return token;
-//     },
-//     async session({ session, token }) {
-//       if (session.user) {
-//         session.user.firstName = token.firstName || '';
-//         session.user.lastName = token.lastName || '';
-//         session.user.email = token.email || '';
-//         session.user.image = token.image || '';
-//       }
-//       return session;
-//     },
-//   },
-//   pages: {
-//     signIn: '/auth/signup',
-//     newUser: '/auth/onboarding',
-//   },
-//   secret: process.env.NEXTAUTH_SECRET,
-// };
+interface CustomUser extends AdapterUser {
+  authProvider?: string;
+  firstName?: string;
+  lastName?: string;
+  image?: string;
+  name?: string;
+}
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -81,7 +46,7 @@ export const authOptions: AuthOptions = {
           user.password
         );
         if (!isPasswordValid) return null;
-
+        // console.log("User authenticated successfully:", user);
         return {
           id: user._id.toString(),
           email: user.email ?? undefined,
@@ -99,13 +64,18 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.email = user.email ?? undefined;
-        token.firstName = user.name?.split(' ')[0]; 
-        token.lastName = user.name?.split(' ')[1]; 
-        token.image = user.image;
-        token.authProvider = (user as any).authProvider || 'google'; // eslint-disable-line @typescript-eslint/no-explicit-any
-
+        const customUser = user as CustomUser;
+        token.email = customUser.email ?? undefined;
+        token.firstName = customUser.authProvider === 'credentials'
+          ? customUser.firstName
+          : customUser.name?.split(' ')[0];
+        token.lastName = customUser.authProvider === 'credentials'
+          ? customUser.lastName
+          : customUser.name?.split(' ')[1];
+        token.image = customUser.image;
+        token.authProvider = customUser.authProvider || 'google';
       }
+      // console.log("JWT callback triggered for user:", token);
       return token;
     },
     async session({ session, token }) {
@@ -117,6 +87,7 @@ export const authOptions: AuthOptions = {
         session.user.authProvider = token.authProvider as string;
 
       }
+      // console.log("Session callback triggered for user:", session);
 
       return session;
     },
