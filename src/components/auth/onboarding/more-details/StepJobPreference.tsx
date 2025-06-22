@@ -24,6 +24,7 @@ export default function StepJobPreference() {
 
   useEffect(() => {
     const checkAndRedirect = async () => {
+      console.log("Current user:", session?.user);
       setLoading(true);
       const hasProfile = await checkUserProfile(session?.user.email);
       

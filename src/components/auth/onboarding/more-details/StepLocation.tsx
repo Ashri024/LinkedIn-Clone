@@ -19,6 +19,7 @@ export default function StepLocation() {
   // Check authStep === 1
   useEffect(() => {
     const checkAndRedirect = async () => {
+      console.log("Current user:", session?.user);
       setLoading(true);
       const hasProfile = await checkUserProfile(session?.user.email);
       if(hasProfile !== 1) {

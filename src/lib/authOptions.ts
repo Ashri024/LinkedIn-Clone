@@ -13,6 +13,7 @@ export interface SafeUser {
   firstName: string;
   lastName: string;
   profileImageUrl?: string;
+  authStep?: number; 
 }
 
 interface CustomUser extends AdapterUser {
@@ -22,6 +23,7 @@ interface CustomUser extends AdapterUser {
   lastName?: string;
   image?: string;
   name?: string;
+  authStep?: number; 
 }
 
 export const authOptions: AuthOptions = {
@@ -47,15 +49,15 @@ export const authOptions: AuthOptions = {
           user.password
         );
         if (!isPasswordValid) return null;
-        // console.log("User authenticated successfully:", user);
         return {
-          id: user._id.toString(),
+          _id: user._id.toString(),
           email: user.email ?? undefined,
           firstName: user.firstName,
           lastName: user.lastName,
           image: user.profileImageUrl,
           authProvider: 'credentials', // ✅ add this
-        };
+          authStep: user.authStep || 0, // Optional field
+        } as CustomUser;
       },
     }),
   ],
@@ -64,57 +66,65 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      await connectDB();
       if (user) {
         const customUser = user as CustomUser;
       
         token.email = customUser.email;
         token.authProvider = customUser.authProvider || 'google';
-        token._id = customUser._id?.toString();
-      
         // Optional fields
         const [first, last] = (customUser.name || '').split(' ');
         token.firstName = customUser.firstName || first;
         token.lastName = customUser.lastName || last || '';
         token.image = customUser.image || '';
+        if(token._id) {
+          token._id = customUser._id;
+        }else{
+          const userFromDb = await Profile.findById(customUser._id).lean<SafeUser>();
+          if (userFromDb) {
+            token._id = userFromDb._id.toString();
+            token.authStep = userFromDb.authStep || 0; // Optional field
+        }
+        }
       }
-      // console.log("JWT callback triggered for user:", token);
       return token;
     },
     async session({ session, token }) {
       await connectDB();
       if (session.user) {
         // PAHLE KA CODE
-
+        console.log("Passed token: ", token);
         session.user.email = token.email as string;
         session.user.firstName = token.firstName as string;
         session.user.lastName = token.lastName as string;
         session.user.image = token.image as string;
         session.user.authProvider = token.authProvider as string;
+        session.user.authStep = token.authStep as number || 0; // Optional field
 
         session.user._id = token._id as string || undefined;
-
         if( session.user._id && session.user._id !== 'undefined') {
         const userFromDb = await Profile.findById(session.user._id).lean<SafeUser>();
+        console.log("User found in DB session id:", userFromDb);
         if (userFromDb) {
           session.user.email = userFromDb.email;
           session.user.firstName = userFromDb.firstName;
           session.user.lastName = userFromDb.lastName;
           session.user.image = userFromDb.profileImageUrl;
+          session.user.authStep = userFromDb.authStep || 0; // Optional field
         }
       }
       else { 
         // else find via email
         const userFromDb = await Profile.findOne({ email: session.user.email }).lean<SafeUser>();
         if (userFromDb) {
+          console.log("User found in DB session email:", userFromDb);
           session.user._id = userFromDb._id.toString();
           session.user.email = userFromDb.email;
           session.user.firstName = userFromDb.firstName;
           session.user.lastName = userFromDb.lastName;
           session.user.image = userFromDb.profileImageUrl;
+          session.user.authStep = userFromDb.authStep || 0; // Optional field
         }
       }}
-      // console.log("Session callback triggered for user:", session);
 
       return session;
     },

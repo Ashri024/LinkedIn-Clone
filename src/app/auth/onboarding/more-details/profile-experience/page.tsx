@@ -16,6 +16,7 @@ export default function ProfileExperiencePage() {
   // Check authStep === 2
   useEffect(() => {
     const checkAndRedirect = async () => {
+      console.log("Current user:", session?.user);
       setLoading(true);
       const hasProfile = await checkUserProfile(session?.user.email);
       if(hasProfile !== 2) {
