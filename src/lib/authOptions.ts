@@ -64,6 +64,7 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      await connectDB();
       if (user) {
         const customUser = user as CustomUser;
         token.email = customUser.email ?? undefined;
@@ -93,6 +94,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      await connectDB();
       if (session.user) {
         // PAHLE KA CODE
 
@@ -103,7 +105,7 @@ export const authOptions: AuthOptions = {
         session.user.authProvider = token.authProvider as string;
 
         session.user._id = token._id as string || undefined;
-        
+
         if( session.user._id && session.user._id !== 'undefined') {
         const userFromDb = await Profile.findById(session.user._id).lean<SafeUser>();
         if (userFromDb) {
