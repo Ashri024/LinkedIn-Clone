@@ -15,7 +15,9 @@ function Navbar() {
           <Image src={Logo} alt="LinkedIn" width={120}  priority />
         </Link>
         <div className='flex items-center gap-4'>
-          <Button variant="destructive" onClick={()=>signOut()} >Logout</Button>
+          <Button variant="destructive" onClick={()=>{
+            signOut({ callbackUrl: '/auth/signup' })
+          }} >Logout</Button>
           <ThemeToggle />
         </div>
       </nav>

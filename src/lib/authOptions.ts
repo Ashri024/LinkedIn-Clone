@@ -16,6 +16,7 @@ export interface SafeUser {
 }
 
 interface CustomUser extends AdapterUser {
+  _id?: string;
   authProvider?: string;
   firstName?: string;
   lastName?: string;
@@ -74,6 +75,19 @@ export const authOptions: AuthOptions = {
           : customUser.name?.split(' ')[1];
         token.image = customUser.image;
         token.authProvider = customUser.authProvider || 'google';
+
+        // Logic for handling user's id
+        if(customUser._id) {
+          token._id = customUser._id.toString();
+        } else {
+          // If the user does not have id, then find it from the database
+          const userFromDb = await Profile.findOne({ email: customUser.email }).lean<SafeUser>();
+          if (userFromDb) {
+            token._id = userFromDb._id.toString();
+          } else {
+            console.error("User not found in the database:", customUser.email);
+          }
+        }
       }
       // console.log("JWT callback triggered for user:", token);
       return token;
@@ -85,7 +99,7 @@ export const authOptions: AuthOptions = {
         session.user.lastName = token.lastName as string;
         session.user.image = token.image as string;
         session.user.authProvider = token.authProvider as string;
-
+        session.user._id = token._id as string || undefined;
       }
       // console.log("Session callback triggered for user:", session);
 

@@ -8,6 +8,7 @@ declare module "next-auth" {
       lastName?: string;
       email?: string;
       image?: string | null;
+      _id?: string; // Add _id to the session user
     } & DefaultSession["user"];
   }
 }
@@ -19,5 +20,6 @@ declare module "next-auth/jwt" {
     lastName?: string;
     email?: string;
     image?: string | null;
+    _id?: string; // Add _id to the JWT token
   }
 }

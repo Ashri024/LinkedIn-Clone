@@ -57,7 +57,7 @@ export default function SignInPage() {
         setLoading(true);
         const hasProfile = await checkUserProfile(session?.user.email);
         console.log('User exists after session check login:', hasProfile);
-        if(hasProfile === 1) {
+        if(hasProfile >= 1 && hasProfile <= 4) {
           router.replace('/auth/onboarding/more-details');
           return;
         } else if (hasProfile ===0) {

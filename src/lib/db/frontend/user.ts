@@ -47,7 +47,7 @@ export async function runCheckAndRedirect({
       });
       setCheckingUserStatus(false);
       return;
-    } else if (userExistStatus === 1) {
+    } else if(userExistStatus >= 1 && userExistStatus <= 4) {
       router.replace('/auth/onboarding/more-details');
       return;
     } else if (userExistStatus === 5) {

@@ -12,7 +12,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
     redirect('/auth/signup'); // No session or email, redirect to sign-in page
   } else if (exists === 0) {
     redirect('/auth/onboarding'); // Session email exists but user in db does not exist, redirect to onboarding page
-  } else if (exists === 1) {
+  } else if(exists >= 1 && exists <= 4) {
     redirect('/auth/onboarding/more-details'); // User exists but needs more details
   } 
   return <>{children}</>;
