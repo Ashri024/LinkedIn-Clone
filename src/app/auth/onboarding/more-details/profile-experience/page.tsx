@@ -2,14 +2,34 @@
 
 import StepExperience from '@/components/auth/onboarding/more-details/StepExperience';
 import StepStudent from '@/components/auth/onboarding/more-details/StepStudent';
-import { useState } from 'react';
+import LoaderComponent from '@/components/LoaderComponent';
+import { checkUserProfile } from '@/lib/db/frontend/user';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 
 export default function ProfileExperiencePage() {
   const [isStudent, setIsStudent] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
   const router = useRouter();
+  // Check authStep === 2
+  useEffect(() => {
+    const checkAndRedirect = async () => {
+      setLoading(true);
+      const hasProfile = await checkUserProfile(session?.user.email);
+      if(hasProfile !== 2) {
+        router.replace('/auth/onboarding/more-details');
+        return;
+      }
+      setLoading(false);
+  };
+  checkAndRedirect();
+  }, [session, status, router]);
 
+  if (loading) {
+    return <LoaderComponent text="Checking Profile Status..." />;
+  }
   return (
     <>
       {isStudent ? (
@@ -20,15 +40,6 @@ export default function ProfileExperiencePage() {
         />
       )}
 
-      {/* Consistent Continue Button */}
-      <div className="pt-4">
-        <Button
-          className="w-full"
-          onClick={() => router.push('/auth/onboarding/more-details/profile-email-verification')}
-        >
-          Continue
-        </Button>
-      </div>
     </>
   );
 }

@@ -94,12 +94,24 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.email = token.email as string;
-        session.user.firstName = token.firstName as string;
-        session.user.lastName = token.lastName as string;
-        session.user.image = token.image as string;
-        session.user.authProvider = token.authProvider as string;
+        // PAHLE KA CODE
+
+        // session.user.email = token.email as string;
+        // session.user.firstName = token.firstName as string;
+        // session.user.lastName = token.lastName as string;
+        // session.user.image = token.image as string;
+        // session.user.authProvider = token.authProvider as string;
+
         session.user._id = token._id as string || undefined;
+        // fetch user's profile from ALREDY existing id in session
+        const userFromDb = await Profile.findById(session.user._id).lean<SafeUser>();
+        if (userFromDb) {
+          session.user.email = userFromDb.email;
+          session.user.firstName = userFromDb.firstName;
+          session.user.lastName = userFromDb.lastName;
+          session.user.image = userFromDb.profileImageUrl;
+          session.user.authProvider = 'credentials'; // Assuming credentials for now
+        }
       }
       // console.log("Session callback triggered for user:", session);
 

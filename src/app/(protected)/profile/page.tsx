@@ -2,7 +2,7 @@ import React from 'react'
 
 function profilePage() {
   return (
-    <div>profilePage</div>
+    <div className='dark:bg-black'>profilePage</div>
   )
 }
 

@@ -15,7 +15,10 @@ export async function POST(req: NextRequest) {
     if (body.password) {
       body.password = await bcrypt.hash(body.password, 10);
     }
-
+    if(body.authProvider === 'google') {
+      // For Google auth, we already have a verified email
+      body.emailVerified = true;
+    }
     const profile = new Profile(body);
     await profile.save();
 

@@ -4,9 +4,9 @@ export interface IEducation extends Document {
     profileId: mongoose.Types.ObjectId;
     school: string;
     degree: string;
-    fieldOfStudy: string;
+    fieldOfStudy?: string;
     period: {
-      start: { month: number; year: number };
+      start?: { month: number; year: number };
       end?: { month: number; year: number };
     };
     grade?: string;

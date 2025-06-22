@@ -18,7 +18,7 @@ export default function OnboardingPage() {
 
   useEffect(() => {
     if (status === 'loading') return;
-
+    console.log('Session:', session);
     runCheckAndRedirect({
       email,
       password,

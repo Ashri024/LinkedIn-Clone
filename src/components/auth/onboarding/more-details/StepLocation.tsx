@@ -57,7 +57,7 @@ export default function StepLocation() {
     }
   setSubmitting(false);
   };
-  if (loading) {
+  if (loading || status === 'loading') {
     return <LoaderComponent text="Checking Profile Status..." />;
   }
 

@@ -33,7 +33,16 @@ function MoreDetailsPage() {
         } else if (hasProfile === 0) {
           router.replace('/auth/onboarding');
           return;
-        } else if (stepPaths[hasProfile] && pathname !== stepPaths[hasProfile]) {
+        } else if (hasProfile===3 && stepPaths[hasProfile] && pathname !== stepPaths[hasProfile]) {
+          if(session?.user?.authProvider === 'credentials') {
+            router.replace(stepPaths[3]);
+            return;
+          }
+          else {
+            router.replace(stepPaths[4]);
+            return;
+          }
+        }else if (stepPaths[hasProfile] && pathname !== stepPaths[hasProfile]) {
           router.replace(stepPaths[hasProfile]);
           return;
         }
