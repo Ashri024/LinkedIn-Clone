@@ -66,6 +66,7 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      await connectDB();
       if (user) {
         const customUser = user as CustomUser;
       
