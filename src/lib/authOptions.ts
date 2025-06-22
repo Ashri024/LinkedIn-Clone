@@ -67,28 +67,16 @@ export const authOptions: AuthOptions = {
       await connectDB();
       if (user) {
         const customUser = user as CustomUser;
-        token.email = customUser.email ?? undefined;
-        token.firstName = customUser.authProvider === 'credentials'
-          ? customUser.firstName
-          : customUser.name?.split(' ')[0];
-        token.lastName = customUser.authProvider === 'credentials'
-          ? customUser.lastName
-          : customUser.name?.split(' ')[1];
-        token.image = customUser.image;
+      
+        token.email = customUser.email;
         token.authProvider = customUser.authProvider || 'google';
-
-        // Logic for handling user's id
-        if(customUser._id) {
-          token._id = customUser._id.toString();
-        } else {
-          // If the user does not have id, then find it from the database
-          const userFromDb = await Profile.findOne({ email: customUser.email }).lean<SafeUser>();
-          if (userFromDb) {
-            token._id = userFromDb._id.toString();
-          } else {
-            console.error("User not found in the database:", customUser.email);
-          }
-        }
+        token._id = customUser._id?.toString();
+      
+        // Optional fields
+        const [first, last] = (customUser.name || '').split(' ');
+        token.firstName = customUser.firstName || first;
+        token.lastName = customUser.lastName || last || '';
+        token.image = customUser.image || '';
       }
       // console.log("JWT callback triggered for user:", token);
       return token;
