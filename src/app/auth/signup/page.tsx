@@ -11,7 +11,7 @@ import { checkUserProfile } from '@/lib/db/frontend/user';
 import toast from 'react-hot-toast'; 
 
 export default function SignUpPage() {
-  const { data: session, status } = useSession();
+  const { data: session, status} = useSession();
   const router = useRouter();
 
   const [form, setForm] = useState({ email: '', password: '' });
@@ -67,23 +67,27 @@ export default function SignUpPage() {
   useEffect(() => {
     const checkAndRedirect = async () => {
       if (status === 'loading') return;
+      console.log("Session authstep /signup:", session?.user?.authStep);
       setLoading(true);
-      const hasProfile = await checkUserProfile(session?.user.email);
-        console.log('User exists after session check:', hasProfile);
-        if(hasProfile >= 1 && hasProfile <= 4) {
+      
+      if(session?.user?.authStep===undefined) {
+        setLoading(false);
+        return;
+      };
+        if(session?.user?.authStep >= 1 && session?.user?.authStep <= 4) {
           router.replace('/auth/onboarding/more-details');
           return;
-        } else if (hasProfile ===0) {
+        } else if (session?.user?.authStep === 0) {
           router.replace('/auth/onboarding');
           return;
-        } else if (hasProfile === 5) {
+        } else if (session?.user?.authStep === 5) {
           router.replace('/profile');
           return;
         }
         setLoading(false);
     };
     checkAndRedirect();
-  }, [session?.user?.email, router, status]);
+  }, [router, status, session?.user?.authStep]);
 
   if (loading || status === 'loading') {
     return <LoaderComponent text='Checking Profile Status...'/>

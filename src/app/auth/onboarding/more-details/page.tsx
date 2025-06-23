@@ -3,8 +3,6 @@ import LoaderComponent from '@/components/LoaderComponent';
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
-import { checkUserProfile } from '@/lib/db/frontend/user';
-
 
 function MoreDetailsPage() {
     const { data: session, status } = useSession();
@@ -13,12 +11,11 @@ function MoreDetailsPage() {
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      console.log("Current user:", session?.user);
+      if (status === 'loading') return; // Wait for session to load
       const checkAndRedirect = async () => {
         setLoading(true);
-        const hasProfile = await checkUserProfile(session?.user.email || undefined);
-        console.log("User exists after session check:", hasProfile);
-  
+        console.log("authstep in /more-details:", session?.user?.authStep);
+        
         const stepPaths = {
           1: '/auth/onboarding/more-details/profile-location',
           2: '/auth/onboarding/more-details/profile-experience',
@@ -27,13 +24,13 @@ function MoreDetailsPage() {
           5: '/profile',
         };
   
-        if (hasProfile === -1) {
+        if (session?.user?.authStep===undefined) {
           router.replace('/auth/signup');
           return;
-        } else if (hasProfile === 0) {
+        } else if (session?.user?.authStep === 0) {
           router.replace('/auth/onboarding');
           return;
-        } else if (hasProfile===3 && stepPaths[hasProfile] && pathname !== stepPaths[hasProfile]) {
+        } else if (session?.user?.authStep===3 && stepPaths[session?.user?.authStep] && pathname !== stepPaths[session?.user?.authStep]) {
           if(session?.user?.authProvider === 'credentials') {
             router.replace(stepPaths[3]);
             return;
@@ -42,8 +39,8 @@ function MoreDetailsPage() {
             router.replace(stepPaths[4]);
             return;
           }
-        }else if (stepPaths[hasProfile] && pathname !== stepPaths[hasProfile]) {
-          router.replace(stepPaths[hasProfile]);
+        }else if (stepPaths[session?.user?.authStep] && pathname !== stepPaths[session?.user?.authStep]) {
+          router.replace(stepPaths[session?.user?.authStep]);
           return;
         }
   
@@ -51,7 +48,7 @@ function MoreDetailsPage() {
       };
   
       checkAndRedirect();
-    }, [session, router, pathname]);
+    }, [router, pathname, status, session?.user?.authStep,session?.user?.authProvider]);
   
     if (loading || status === 'loading') {
       return <LoaderComponent text="Checking Profile Status..." />;

@@ -18,7 +18,7 @@ interface Props {
 
 export default function OnboardingForm({ sessionImage, prefillData }: Props) {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [step, setStep] = useState(1);
   const signUpMode = useAuthStore((state) => state.signUpMode);
   const emailFromStore = useAuthStore((state) => state.email);
@@ -73,6 +73,7 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
           toast.error('Sign in failed after registration');
         }
       } else {
+        await update();
         router.push('/');
       }
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any

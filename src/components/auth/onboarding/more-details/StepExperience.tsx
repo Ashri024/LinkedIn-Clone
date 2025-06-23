@@ -25,7 +25,7 @@ interface Props {
 
 export default function StepExperience({ onStudentToggle }: Props) {
   const router = useRouter();
-  const {data: session} = useSession();
+  const {data: session, update} = useSession();
   const {
     register,
     handleSubmit,
@@ -77,6 +77,7 @@ export default function StepExperience({ onStudentToggle }: Props) {
         toast.error('Failed to update profile step');
         return;
       }
+      await update(); // Refresh session data
       toast.success('Experience saved successfully');
       if(session?.user?.authProvider === 'credentials') {
       router.push('/auth/onboarding/more-details/profile-email-verification');

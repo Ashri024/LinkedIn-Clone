@@ -3,7 +3,6 @@
 import StepExperience from '@/components/auth/onboarding/more-details/StepExperience';
 import StepStudent from '@/components/auth/onboarding/more-details/StepStudent';
 import LoaderComponent from '@/components/LoaderComponent';
-import { checkUserProfile } from '@/lib/db/frontend/user';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -15,18 +14,18 @@ export default function ProfileExperiencePage() {
   const router = useRouter();
   // Check authStep === 2
   useEffect(() => {
+  if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
-      console.log("Current user:", session?.user);
+      console.log("User session /profile-experience:", session?.user?.authStep);
       setLoading(true);
-      const hasProfile = await checkUserProfile(session?.user.email);
-      if(hasProfile !== 2) {
+      if(session?.user?.authStep !== 2) {
         router.replace('/auth/onboarding/more-details');
         return;
       }
       setLoading(false);
   };
   checkAndRedirect();
-  }, [session, status, router]);
+  }, [router, session?.user?.authStep, status]);
 
   if (loading) {
     return <LoaderComponent text="Checking Profile Status..." />;

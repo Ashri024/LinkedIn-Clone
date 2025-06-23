@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
 import { AdapterUser } from "next-auth/adapters";
+import { authStepOptions } from '@/types/next-auth';
 let jwtCall = 0;
 let sessionCall = 0;
 export interface SafeUser {
@@ -14,7 +15,7 @@ export interface SafeUser {
   firstName: string;
   lastName: string;
   profileImageUrl?: string;
-  authStep?: number; 
+  authStep: authStepOptions; // Optional field for user status
 }
 
 interface CustomUser extends AdapterUser {
@@ -24,7 +25,7 @@ interface CustomUser extends AdapterUser {
   lastName?: string;
   image?: string;
   name?: string;
-  authStep?: number; 
+  authStep: authStepOptions; // Optional field for user status
 }
 
 export const authOptions: AuthOptions = {
@@ -85,11 +86,12 @@ export const authOptions: AuthOptions = {
           const userFromDb = await Profile.findById(customUser._id).lean<SafeUser>();
           if (userFromDb) {
             token._id = userFromDb._id.toString();
-            token.authStep = userFromDb.authStep || 0; // Optional field
+            token.authStep = (typeof userFromDb.authStep === 'number' ? userFromDb.authStep : 0) as authStepOptions;
+
         }
         }
       }
-      console.log('JWT token object:', token);
+      // console.log('JWT token object:', token);
       return token;
     },
     async session({ session, token }) {
@@ -102,7 +104,7 @@ export const authOptions: AuthOptions = {
         session.user.lastName = token.lastName as string;
         session.user.image = token.image as string;
         session.user.authProvider = token.authProvider as string;
-        session.user.authStep = token.authStep as number || 0; // Optional field
+        session.user.authStep = (typeof token.authStep === 'number' ? token.authStep : 0) as authStepOptions; // Optional field
 
         session.user._id = token._id as string || undefined;
         if( session.user._id && session.user._id !== 'undefined') {
@@ -112,7 +114,7 @@ export const authOptions: AuthOptions = {
           session.user.firstName = userFromDb.firstName;
           session.user.lastName = userFromDb.lastName;
           session.user.image = userFromDb.profileImageUrl;
-          session.user.authStep = userFromDb.authStep || 0; // Optional field
+          session.user.authStep = (typeof userFromDb.authStep === 'number' ? userFromDb.authStep : 0) as authStepOptions; // Optional field
         }
       }
       else { 
@@ -124,10 +126,10 @@ export const authOptions: AuthOptions = {
           session.user.firstName = userFromDb.firstName;
           session.user.lastName = userFromDb.lastName;
           session.user.image = userFromDb.profileImageUrl;
-          session.user.authStep = userFromDb.authStep || 0; // Optional field
+          session.user.authStep = (typeof userFromDb.authStep === 'number' ? userFromDb.authStep : 0) as authStepOptions; // Optional field
         }
       }}
-      console.log('Session object:', session);
+      // console.log('Session object:', session);
       return session;
     },
   },

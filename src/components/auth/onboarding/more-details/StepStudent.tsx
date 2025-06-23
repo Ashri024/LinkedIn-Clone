@@ -32,7 +32,7 @@ interface Props {
 
 export default function StepStudent({ onNotStudent }: Props) {
   const router = useRouter();
-  const {data:session} = useSession();
+  const {data:session, update} = useSession();
   const [yearError, setYearError] = useState<string | null>(null);
 
   const {
@@ -105,7 +105,6 @@ export default function StepStudent({ onNotStudent }: Props) {
         },
       };
 
-      console.log('Submitting education data:', payload);
       const res = await fetch('/api/education', {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -116,7 +115,6 @@ export default function StepStudent({ onNotStudent }: Props) {
         return;
       };
       const educationData = await res.json();
-      console.log('Education submission response:', educationData);
 
       // Update profile with new education
       const profileUpdateRes = await fetch('/api/profile', {
@@ -130,6 +128,7 @@ export default function StepStudent({ onNotStudent }: Props) {
         toast.error('Failed to update profile step');
         return;
       }
+      await update(); // Refresh session data
       toast.success('Education details saved successfully');
       if(session?.user?.authProvider === 'credentials') {
       router.push('/auth/onboarding/more-details/profile-email-verification');

@@ -5,7 +5,6 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SignInForm } from '@/components/auth/signin/SignInForm';
 import { SignInGoogle } from '@/components/auth/signin/SignInGoogle';
-import { checkUserProfile } from '@/lib/db/frontend/user';
 import LoaderComponent from '@/components/LoaderComponent';
 import toast from 'react-hot-toast';
 
@@ -53,24 +52,30 @@ export default function SignInPage() {
   };
 
   useEffect(() => {
+    if (status === 'loading') return; // Wait for session to load
+    
     const checkAndRedirect = async () => {
-        setLoading(true);
-        const hasProfile = await checkUserProfile(session?.user.email);
-        console.log('User exists after session check login:', hasProfile);
-        if(hasProfile >= 1 && hasProfile <= 4) {
+      console.log("Session authstep /signup:", session?.user?.authStep);
+      setLoading(true);
+
+      if(session?.user?.authStep===undefined) {
+        setLoading(false);
+        return;
+      };
+        if(session?.user?.authStep >= 1 && session?.user?.authStep <= 4) {
           router.replace('/auth/onboarding/more-details');
           return;
-        } else if (hasProfile ===0) {
+        } else if (session?.user?.authStep ===0) {
           router.replace('/auth/onboarding');
           return;
-        } else if (hasProfile === 5) {
+        } else if (session?.user?.authStep === 5) {
           router.replace('/profile');
           return;
         }
         setLoading(false);
     };
     checkAndRedirect();
-  }, [session, router]);
+  }, [router, session?.user?.authStep, status]);
 
   if (loading || status === 'loading') {
     return <LoaderComponent text='Checking Profile status...' />;
