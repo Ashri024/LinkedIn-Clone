@@ -4,8 +4,10 @@ import { authOptions } from '@/lib/authOptions';
 import { connectDB } from '@/lib/mongodb';
 import { Education } from '@/models/Education';
 import { Profile } from '@/models/Profile';
+let apiCall =0;
 
 export async function POST(req: NextRequest) {
+  console.log('/route/education: ', ++apiCall);
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -22,14 +24,13 @@ export async function POST(req: NextRequest) {
       profileId,
     });
 
-    await education.save();
+    const educationSaved=await education.save();
 
     await Profile.findByIdAndUpdate(profileId, {
       $push: { educations: education._id },
-      $set: { authStep: 3 },
     });
 
-    return NextResponse.json({ message: 'Education saved', education });
+    return NextResponse.json({ message: 'Education saved', education: educationSaved }, { status: 201 });
   } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     return NextResponse.json({ message: err.message || 'Server error' }, { status: 500 });
   }

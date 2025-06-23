@@ -1,8 +1,9 @@
 // src/app/api/upload/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import cloudinary from '@/lib/cloudinary';
-
+let apiCall = 0;
 export async function POST(request: NextRequest) {
+  console.log('/route/upload: ', ++apiCall);
     try {
       const formData = await request.formData();
       const fileBlob = formData.get('file') as Blob;

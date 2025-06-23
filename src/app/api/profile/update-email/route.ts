@@ -3,8 +3,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
-
+let apiCall = 0;
 export async function PATCH(req: Request) {
+  console.log('/route/profile/update-email: ', ++apiCall);
   await connectDB();
   const session = await getServerSession(authOptions);
   const { email: newEmail } = await req.json();

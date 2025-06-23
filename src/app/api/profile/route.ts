@@ -5,13 +5,13 @@ import { Profile } from '@/models/Profile';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import bcrypt from 'bcryptjs';
-
+let apiCall = 0;
 export async function POST(req: NextRequest) {
+  console.log('/route/profile: ', ++apiCall);
   try {
     await connectDB();
     await Profile.init();
     const body = await req.json();
-
     if (body.password) {
       body.password = await bcrypt.hash(body.password, 10);
     }
@@ -20,7 +20,8 @@ export async function POST(req: NextRequest) {
       body.emailVerified = true;
     }
     const profile = new Profile(body);
-    await profile.save();
+    
+   await profile.save();
 
     return NextResponse.json({ message: 'Profile created successfully' }, { status: 201 });
   } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any

@@ -5,7 +5,8 @@ import bcrypt from 'bcryptjs';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
 import { AdapterUser } from "next-auth/adapters";
-
+let jwtCall = 0;
+let sessionCall = 0;
 export interface SafeUser {
   _id: string;
   email: string;
@@ -66,6 +67,7 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      console.log("JWT callback called: ", ++jwtCall);
       await connectDB();
       if (user) {
         const customUser = user as CustomUser;
@@ -87,13 +89,14 @@ export const authOptions: AuthOptions = {
         }
         }
       }
+      console.log('JWT token object:', token);
       return token;
     },
     async session({ session, token }) {
+      console.log("Session callback called: ", ++sessionCall);
       await connectDB();
       if (session.user) {
         // PAHLE KA CODE
-        console.log("Passed token: ", token);
         session.user.email = token.email as string;
         session.user.firstName = token.firstName as string;
         session.user.lastName = token.lastName as string;
@@ -104,7 +107,6 @@ export const authOptions: AuthOptions = {
         session.user._id = token._id as string || undefined;
         if( session.user._id && session.user._id !== 'undefined') {
         const userFromDb = await Profile.findById(session.user._id).lean<SafeUser>();
-        console.log("User found in DB session id:", userFromDb);
         if (userFromDb) {
           session.user.email = userFromDb.email;
           session.user.firstName = userFromDb.firstName;
@@ -117,7 +119,6 @@ export const authOptions: AuthOptions = {
         // else find via email
         const userFromDb = await Profile.findOne({ email: session.user.email }).lean<SafeUser>();
         if (userFromDb) {
-          console.log("User found in DB session email:", userFromDb);
           session.user._id = userFromDb._id.toString();
           session.user.email = userFromDb.email;
           session.user.firstName = userFromDb.firstName;
@@ -126,7 +127,7 @@ export const authOptions: AuthOptions = {
           session.user.authStep = userFromDb.authStep || 0; // Optional field
         }
       }}
-
+      console.log('Session object:', session);
       return session;
     },
   },

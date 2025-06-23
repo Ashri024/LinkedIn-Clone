@@ -115,7 +115,22 @@ export default function StepStudent({ onNotStudent }: Props) {
         toast.error('Failed to save education details');
         return;
       };
+      const educationData = await res.json();
+      console.log('Education submission response:', educationData);
 
+      // Update profile with new education
+      const profileUpdateRes = await fetch('/api/profile', {
+        method: 'PATCH',
+        body: JSON.stringify({ 
+          authStep: 3,  
+          educations: [educationData.education._id] 
+        }),
+      });
+      if (!profileUpdateRes.ok) {
+        toast.error('Failed to update profile step');
+        return;
+      }
+      toast.success('Education details saved successfully');
       if(session?.user?.authProvider === 'credentials') {
       router.push('/auth/onboarding/more-details/profile-email-verification');
       } else {

@@ -55,16 +55,29 @@ export default function StepExperience({ onStudentToggle }: Props) {
           },
         ],
       };
-      console.log('Submitting experience data:', payload);
       const res = await fetch('/api/experience', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-
+      const experienceData = await res.json();
+      console.log('Experience submission response:', experienceData);
       if (!res.ok) {
         toast.error('Failed to save experience');
         return;
       };
+      
+      const profileUpdateRes = await fetch('/api/profile', {
+        method: 'PATCH',
+        body: JSON.stringify({ 
+          authStep: 3,  
+          experiences: [experienceData.experience._id] 
+        }),
+      }); 
+      if (!profileUpdateRes.ok) {
+        toast.error('Failed to update profile step');
+        return;
+      }
+      toast.success('Experience saved successfully');
       if(session?.user?.authProvider === 'credentials') {
       router.push('/auth/onboarding/more-details/profile-email-verification');
       console.log('CREDENTIALS CREDENTIALS CREDENTIALS');

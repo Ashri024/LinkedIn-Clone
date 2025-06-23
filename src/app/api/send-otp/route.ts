@@ -1,8 +1,9 @@
 // /app/api/send-otp/route.ts
 import { NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email/sendEmail';
-
+  let apiCall = 0;
 export async function POST(req: Request) {
+console.log('/route/send-otp: ', ++apiCall);
  
 try{
     const {email} = await req.json();

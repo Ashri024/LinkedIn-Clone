@@ -31,7 +31,6 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
   });
 
   const onSubmitFinal = async (data: OnboardingFormData) => {
-    console.log('Final form data:', data);
     try {
       const res = await fetch('/api/profile', {
         method: 'POST',
@@ -44,7 +43,6 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
           phoneNumber: data.phone,
         }),
       });
-  
       // 📛 Handle failed API responses
       if (!res.ok) {
         const result = await res.json().catch(() => ({})); // prevent crash if response isn't valid JSON
