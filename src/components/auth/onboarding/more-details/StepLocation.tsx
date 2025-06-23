@@ -6,11 +6,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import LoaderComponent from '@/components/LoaderComponent';
+// import LoaderComponent from '@/components/LoaderComponent';
 
 export default function StepLocation() {
   const [location, setLocation] = useState('');
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
   const { data: session, status, update } = useSession();
@@ -20,12 +19,11 @@ export default function StepLocation() {
   if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
       console.log("Authstep in /profile-location:", session?.user?.authStep);
-      setLoading(true);
       if(session?.user?.authStep !== 1) {
+        console.log("/STEP-LOCATION: NOT EQUALS TO 1 IN PROFILE-LOCATION")
         router.replace('/auth/onboarding/more-details');
         return;
       }
-      setLoading(false);
   };
   checkAndRedirect();
   }, [status, router, session?.user?.authStep]);
@@ -59,9 +57,9 @@ export default function StepLocation() {
     }
   setSubmitting(false);
   };
-  if (loading || status === 'loading') {
-    return <LoaderComponent text="Checking Profile Status..." />;
-  }
+  // if (status === 'loading') {
+  //   return <LoaderComponent  />;
+  // }
 
   return (
     <form className="space-y-6">

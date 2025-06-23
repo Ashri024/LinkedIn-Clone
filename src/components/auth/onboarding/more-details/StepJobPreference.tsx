@@ -1,6 +1,6 @@
 'use client';
 
-import LoaderComponent from '@/components/LoaderComponent';
+// import LoaderComponent from '@/components/LoaderComponent';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -16,7 +16,6 @@ const OPTION_VALUES = ['yes', 'maybe', 'no'] as const;
 
 export default function StepJobPreference() {
   const [selected, setSelected] = useState<number | null>(0);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const { data: session, status,update } = useSession();
   const router = useRouter();
@@ -25,18 +24,18 @@ export default function StepJobPreference() {
     if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
       console.log("Session /profile-preference authstep:", session?.user?.authStep);
-      setLoading(true);
       
       if(session?.user?.authStep !== 4 && session?.user?.authProvider === 'credentials') {
+        console.log("/STEP-JOB-PREFERENCE: Redirecting to more details page");
         router.replace('/auth/onboarding/more-details');
         return;
       }
       if(session?.user?.authStep !== 3 && session?.user?.authProvider === 'google') {
+        console.log("/STEP-JOB-PREFERENCE: Redirecting to profile job preference for Google users");
         router.replace('/auth/onboarding/more-details');
         return;
       }
 
-      setLoading(false);
     };
     checkAndRedirect();
   }, [status, router, session?.user?.authStep, session?.user?.authProvider]);
@@ -70,9 +69,9 @@ export default function StepJobPreference() {
     }
   };
 
-  if (loading || status === 'loading') {
-    return <LoaderComponent text="Checking Profile Status..." />;
-  }
+  // if (status === 'loading') {
+  //   return <LoaderComponent />;
+  // }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

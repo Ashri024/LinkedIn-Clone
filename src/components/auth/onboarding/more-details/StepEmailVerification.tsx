@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import LoaderComponent from '@/components/LoaderComponent';
+// import LoaderComponent from '@/components/LoaderComponent';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ export default function StepEmailVerification() {
   const { data: session, status, update } = useSession();
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
   const [sendingOtp, setSendingOtp] = useState(false);
@@ -27,16 +27,16 @@ export default function StepEmailVerification() {
     if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
       console.log("Session authstep /profile-email-verification: ", session?.user?.authStep);
-      setLoading(true);
       if (session?.user?.authStep!== 3) {
+        console.log("/STEP-EMAIL-VERIFICATION: NOT EQUALS TO 3 IN PROFILE-EMAIL-VERIFICATION");
         router.replace('/auth/onboarding/more-details');
         return;
       }
       if (session?.user?.authProvider === 'google') {
+        console.log("Redirecting to profile job preference for Google users");
         router.replace('/auth/onboarding/more-details/profile-job-preference');
         return;
       }
-      setLoading(false);
     };
     checkAndRedirect();
   }, [status, router, session?.user?.authStep, session?.user?.authProvider]);
@@ -120,9 +120,9 @@ export default function StepEmailVerification() {
     }
   };
 
-  if (loading || status === 'loading') {
-    return <LoaderComponent text="Checking Profile Status..." />;
-  }
+  // if ( status === 'loading') {
+  //   return <LoaderComponent  />;
+  // }
 
   return (
     <form onSubmit={verifyOtp} className="space-y-4">
@@ -145,6 +145,10 @@ export default function StepEmailVerification() {
           placeholder="Enter new email"
           value={newEmail}
           onChange={(e) => setNewEmail(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendOtp();
+            }}}
         />
       )}
 

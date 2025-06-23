@@ -14,7 +14,6 @@ export default function SignInPage() {
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string; general?: string }>({});
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const handleCredentialsLogin = async (e: FormEvent<HTMLButtonElement>) => {
@@ -56,10 +55,8 @@ export default function SignInPage() {
     
     const checkAndRedirect = async () => {
       console.log("Session authstep /signup:", session?.user?.authStep);
-      setLoading(true);
 
       if(session?.user?.authStep===undefined) {
-        setLoading(false);
         return;
       };
         if(session?.user?.authStep >= 1 && session?.user?.authStep <= 4) {
@@ -72,13 +69,12 @@ export default function SignInPage() {
           router.replace('/profile');
           return;
         }
-        setLoading(false);
     };
     checkAndRedirect();
   }, [router, session?.user?.authStep, status]);
 
-  if (loading || status === 'loading') {
-    return <LoaderComponent text='Checking Profile status...' />;
+  if (status === 'loading') {
+    return <LoaderComponent  />;
   }
 
   return (

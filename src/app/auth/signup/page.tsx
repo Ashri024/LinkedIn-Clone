@@ -16,7 +16,6 @@ export default function SignUpPage() {
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const setAuthData = useAuthStore((state) => state.setAuthData);
@@ -68,10 +67,8 @@ export default function SignUpPage() {
     const checkAndRedirect = async () => {
       if (status === 'loading') return;
       console.log("Session authstep /signup:", session?.user?.authStep);
-      setLoading(true);
       
       if(session?.user?.authStep===undefined) {
-        setLoading(false);
         return;
       };
         if(session?.user?.authStep >= 1 && session?.user?.authStep <= 4) {
@@ -84,13 +81,12 @@ export default function SignUpPage() {
           router.replace('/profile');
           return;
         }
-        setLoading(false);
     };
     checkAndRedirect();
   }, [router, status, session?.user?.authStep]);
 
-  if (loading || status === 'loading') {
-    return <LoaderComponent text='Checking Profile Status...'/>
+  if (status === 'loading') {
+    return <LoaderComponent />
   }
 
   return (
