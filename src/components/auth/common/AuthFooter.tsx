@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-function Footer() {
+function AuthFooter() {
   return (
     <footer className="text-sm text-gray-500 dark:text-gray-400 p-4 text-center border-t border-gray-200 dark:border-gray-700">
     <p>
@@ -18,4 +18,4 @@ function Footer() {
   )
 }
 
-export default Footer
+export default AuthFooter

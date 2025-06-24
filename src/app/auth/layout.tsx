@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import Navbar from '@/components/auth/common/Navbar';
-import Footer from '@/components/auth/common/Footer';
+import Navbar from '@/components/auth/common/AuthNavbar';
+import Footer from '@/components/auth/common/AuthFooter';
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
 

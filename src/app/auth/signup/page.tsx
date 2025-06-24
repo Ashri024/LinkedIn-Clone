@@ -78,7 +78,7 @@ export default function SignUpPage() {
           router.replace('/auth/onboarding');
           return;
         } else if (session?.user?.authStep === 5) {
-          router.replace('/profile');
+          router.replace('/feed');
           return;
         }
     };

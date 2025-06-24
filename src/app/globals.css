@@ -40,7 +40,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-primaryC: #0a66c2;
-  --color-backgroundC-light: #F3F2F0;
+  --color-backgroundC-light: #F4F2EE;
   --color-backgroundC-dark: #1B1F23;
 }
 
@@ -136,7 +136,7 @@
   @apply bg-black dark:bg-white;
 }
 .background-theme{
-  @apply bg-white dark:bg-black;
+  @apply bg-backgroundC-light dark:bg-black;
 }
 body{
   margin: 0;

@@ -66,7 +66,7 @@ export default function SignInPage() {
           router.replace('/auth/onboarding');
           return;
         } else if (session?.user?.authStep === 5) {
-          router.replace('/profile');
+          router.replace('/feed');
           return;
         }
     };

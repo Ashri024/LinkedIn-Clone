@@ -20,7 +20,7 @@ function MoreDetailsPage() {
           2: '/auth/onboarding/more-details/profile-experience',
           3: '/auth/onboarding/more-details/profile-email-verification',
           4: '/auth/onboarding/more-details/profile-job-preference',
-          5: '/profile',
+          5: '/feed',
         };
     
         if (typeof session.user.authStep !== 'number') {

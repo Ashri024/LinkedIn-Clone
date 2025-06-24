@@ -1,9 +1,13 @@
-// app/(protected)/layout.tsx
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { authOptions } from '@/lib/authOptions';
-import { userExistStatus } from '@/lib/db/backend/user';
+import BackgroundOpacity from "@/components/BackgroundOpacity";
+import { DesktopNav } from "@/components/navigation/DesktopNav";
+import { MobileFooterNav } from "@/components/navigation/MobileFooterNav";
+import { MobileHeader } from "@/components/navigation/MobileHeader";
+import { authOptions } from "@/lib/authOptions";
+import { userExistStatus } from "@/lib/db/backend/user";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
+// app/(protected)/layout.tsx
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
   const exists = await userExistStatus(session?.user.email);
@@ -15,5 +19,15 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   } else if(exists >= 1 && exists <= 4) {
     redirect('/auth/onboarding/more-details'); // User exists but needs more details
   } 
-  return <>{children}</>;
+  return (  
+    <div className="min-h-screen flex flex-col">
+    <MobileHeader />
+    <DesktopNav />
+    {/* Background of opacity 0.4 component */}
+      <BackgroundOpacity />
+      <main className="flex-1">{children}</main>
+    <MobileFooterNav />
+  </div>
+
+)
 }

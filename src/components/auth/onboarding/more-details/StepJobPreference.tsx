@@ -59,7 +59,7 @@ export default function StepJobPreference() {
 
       if (!res.ok) throw new Error('Failed to update');
       await update()
-      router.push('/profile');
+      router.push('/feed');
       
     } catch (err) {
       console.error(err);
