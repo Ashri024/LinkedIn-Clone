@@ -8,6 +8,7 @@ import { useGlobalStore } from "@/store/globalStore";
 import { useRef, useEffect } from "react";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 
 export function MobileHeader() {
@@ -25,14 +26,16 @@ export function MobileHeader() {
   return (
     <header className="flex items-center justify-between md:hidden p-3 bg-backgroundC-light dark:bg-backgroundC-dark sticky top-0 z-50 border-b">
       <div className="flex-center gap-2 w-full">
-      <Image
-            src={session?.user.image || "https://res.cloudinary.com/djnhadxeb/image/upload/v1750766650/vecteezy_man-empty-avatar-vector-photo-placeholder-for-social_36594092_syrkdk.jpg"}
-            alt={"User name"}
-            width={35}
-            height={35}
-            className="rounded-full"
-          />
-        <div className={`w-full relative md:hidden`}>
+        <Link href={"/profile"} className="flex items-center gap-2">
+        <Image
+              src={session?.user.image || "https://res.cloudinary.com/djnhadxeb/image/upload/v1750766650/vecteezy_man-empty-avatar-vector-photo-placeholder-for-social_36594092_syrkdk.jpg"}
+              alt={"User name"}
+              width={35}
+              height={35}
+              className="rounded-full"
+            />
+          </Link>
+          <div className={`w-full relative md:hidden`}>
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                         <FaSearch size={16} />
                     </span>

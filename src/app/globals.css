@@ -42,6 +42,8 @@
   --color-primaryC: #0a66c2;
   --color-backgroundC-light: #F4F2EE;
   --color-backgroundC-dark: #1B1F23;
+  --color-linkC: #71b7fb;
+  --color-linkC-hover: #AAD6FF;
 }
 
 :root {
@@ -137,6 +139,14 @@
 }
 .background-theme{
   @apply bg-backgroundC-light dark:bg-black;
+}
+
+.link-button{
+  @apply font-semibold border border-linkC text-linkC hover:bg-linkC/15 hover:text-linkC-hover transition duration-300 ;
+}
+
+.linkedIn-link{
+  @apply text-linkC hover:underline hover:text-linkC-hover transition duration-300 cursor-pointer;
 }
 body{
   margin: 0;

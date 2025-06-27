@@ -10,7 +10,7 @@ export const navigationItems = [
   {
     label: "My Network",
     icon: <FaUserFriends className="w-5 h-5" />,
-    href: "/network",
+    href: "/myNetwork",
   },
   {
     label: "Jobs",

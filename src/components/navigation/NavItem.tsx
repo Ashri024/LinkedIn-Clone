@@ -19,8 +19,8 @@ export function NavItem({ href, label, icon, showLabel = true }: NavItemProps) {
     <Link
       href={href}
       className={cn(
-        "flex-center flex-col gap-0 px-0 sm:px-3 py-2 rounded-md transition-colors ",
-        isActive ? "text-white font-semibold" : "text-muted-foreground"
+        "flex-center flex-col gap-0 px-0 sm:px-3 py-2 rounded-md transition-colors h-12",
+        isActive ? "text-primaryC dark:text-white font-semibold" : "text-muted-foreground"
       )}
     >
       <span className="text-xl">

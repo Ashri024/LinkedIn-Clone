@@ -12,11 +12,22 @@ const nextConfig: NextConfig = {
     //   "images.unsplash.com",
     //   "dummyimage.com",
     //   "i.imgur.com",
+    // "https://lh3.googleusercontent.com/a/ACg8ocIxsCBcNMQ-T6oODbRDk5pjTQ_ONWOEyos5N2HuW-1ZU7Kn-Q=s96-c"
     // ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "encrypted-tbn0.gstatic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media.licdn.com",
+        pathname: "/dms/image/**", // Allows for dynamic paths under this domain
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/a/**", // Allows for dynamic paths under this domain
       },
       {
         protocol: "https",
