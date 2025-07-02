@@ -61,7 +61,7 @@ export const ProfileActivity = () => {
         {/* Posts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {activityPosts.map((post, index) => (
-            <div key={index} className="bg-backgroundC-dark border border-border rounded-lg shadow-sm">
+            <div key={index} className="dark:bg-backgroundC-dark border border-border rounded-lg shadow-sm">
               {/* Header */}
               <div className="flex items-start justify-between p-3">
                 <div className="flex items-start gap-3">

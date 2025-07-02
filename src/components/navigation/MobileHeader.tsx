@@ -15,6 +15,7 @@ export function MobileHeader() {
   const {data: session} = useSession();
   const searchState = useGlobalStore((state) => state.searchState);
   const setSearchState = useGlobalStore((state) => state.setSearchState);
+  const profile = useGlobalStore((state) => state.profile);
   const searchTabletRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -26,7 +27,8 @@ export function MobileHeader() {
   return (
     <header className="flex items-center justify-between md:hidden p-3 bg-backgroundC-light dark:bg-backgroundC-dark sticky top-0 z-50 border-b">
       <div className="flex-center gap-2 w-full">
-        <Link href={"/profile"} className="flex items-center gap-2">
+        <Link href={`/profile/${profile?.firstName.toLowerCase()}-${profile?.lastName.toLowerCase()}-${profile?._id}`}
+         className="flex items-center gap-2">
         <Image
               src={session?.user.image || "https://res.cloudinary.com/djnhadxeb/image/upload/v1750766650/vecteezy_man-empty-avatar-vector-photo-placeholder-for-social_36594092_syrkdk.jpg"}
               alt={"User name"}

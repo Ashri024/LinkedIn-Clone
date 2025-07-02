@@ -114,14 +114,14 @@ export default function StepStudent({ onNotStudent }: Props) {
         toast.error('Failed to save education details');
         return;
       };
-      const educationData = await res.json();
 
       // Update profile with new education
       const profileUpdateRes = await fetch('/api/profile', {
         method: 'PATCH',
         body: JSON.stringify({ 
           authStep: 3,  
-          educations: [educationData.education._id] 
+          headline: 'Student at ' + data.school,
+          isStudent: true,
         }),
       });
       if (!profileUpdateRes.ok) {

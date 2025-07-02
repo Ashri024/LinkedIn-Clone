@@ -10,7 +10,7 @@ export const ProfileSidebar = () => {
   return (
     <div className="space-y-2 w-full">
       <div className="space-y-0">
-        <Card className="border-0 bg-backgroundC-dark gap-1 py-4 px-0 rounded-b-none">
+        <Card className="border-0 dark:bg-backgroundC-dark gap-1 py-4 px-0 rounded-b-none">
           <CardHeader className="flex justify-between items-center">
             <h3 className="text-theme text-lg font-semibold">
               Profile language
@@ -22,7 +22,7 @@ export const ProfileSidebar = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-0 bg-backgroundC-dark gap-1 py-4 px-0 rounded-t-none relative">
+        <Card className="border-0 dark:bg-backgroundC-dark gap-1 py-4 px-0 rounded-t-none relative">
           {/* a divider of wideth 80% */}
           <div className="h-[1px] bg-muted-foreground/30 mx-auto absolute top-0 left-6 right-6" />
           <CardHeader className="flex justify-between items-center">
@@ -36,7 +36,7 @@ export const ProfileSidebar = () => {
           </CardContent>
         </Card>
       </div>
-      <Card className="border-0 bg-backgroundC-dark gap-4 py-6 px-0">
+      <Card className="border-0 dark:bg-backgroundC-dark gap-4 py-6 px-0">
         <CardHeader className="text-theme text-base font-semibold">
           Who your viewers also viewed
         </CardHeader>
@@ -50,7 +50,7 @@ export const ProfileSidebar = () => {
               <div className="min-w-10 h-10 bg-muted rounded-full" />
               <div className="flex flex-col gap-2">
                 <div className="flex-1 text-theme">{name}</div>
-                <button className="text-sm text-white/70 w-fit px-4 py-1 border hover:bg-white/20 hover:text-white hover:border-white cursor-pointer border-white/80 rounded-3xl font-semibold">
+                <button className="text-sm  linkedIn-button-white font-semibold">
                   View
                 </button>
               </div>
@@ -58,7 +58,7 @@ export const ProfileSidebar = () => {
           ))}
         </CardContent>
       </Card>
-      <Card className="border-0 bg-backgroundC-dark gap-4 py-6 px-0">
+      <Card className="border-0 dark:bg-backgroundC-dark gap-4 py-6 px-0">
         <CardHeader className="text-theme text-base font-semibold">
           People you may know
         </CardHeader>

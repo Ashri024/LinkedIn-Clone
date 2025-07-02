@@ -1,9 +1,21 @@
-import React from 'react'
+'use client';
 
-function FollowersPage() {
+import UserInstance from '@/components/myNetwork/UserInstance';
+import { followersData } from '@/constants/GlobalConstants';
+
+
+export default function FollowPage() {
   return (
-    <div>FollowersPage</div>
-  )
+    <>
+      <p className="text-sm text-muted-foreground mb-4">{followersData.length} people are following you</p>
+
+      <div className="space-y-4">
+        {followersData.map((follower) => {
+         return <UserInstance key={follower._id} follower={follower} />
+        })}
+      </div>
+    </>
+  );
 }
 
-export default FollowersPage
+// Create separte component for followers instance

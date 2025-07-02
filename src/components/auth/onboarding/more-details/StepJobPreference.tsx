@@ -54,6 +54,7 @@ export default function StepJobPreference() {
         body: JSON.stringify({
           lookingForJob: value,
           authStep: 5,
+          // slug: '/'+session?.user?.firstName.toLowerCase() + '-' + session?.user?.lastName.toLowerCase() + '-' + session?.user?._id, // Generate a unique slug
         }),
       });
 

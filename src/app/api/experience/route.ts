@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { connectDB } from '@/lib/mongodb';
 import { Experience } from '@/models/Experience';
+import { Profile } from '@/models/Profile';
 // import { Profile } from '@/models/Profile';
 let apiCall = 0;
 export async function POST(req: NextRequest) {
@@ -27,10 +28,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Experience not created' }, { status: 400 });
     }
 
-    // const res= await Profile.findByIdAndUpdate(profileId, {
-    //   $push: { experiences: newExperience._id },
-    //   $set: { authStep: 3 },
-    // });
+    await Profile.findByIdAndUpdate(profileId, {
+      $push: { experiences: newExperience._id },
+    });
     // console.log('Profile updated with new experience:', res);
     return NextResponse.json({ message: 'Experience saved', experience: newExperienceSaved });
   } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any

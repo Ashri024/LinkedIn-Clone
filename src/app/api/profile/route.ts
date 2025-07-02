@@ -2,10 +2,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Education } from '@/models/Education';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Experience } from '@/models/Experience';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import bcrypt from 'bcryptjs';
 let apiCall = 0;
+
+export async function GET() {
+  console.log('/route/profile: ', ++apiCall);
+  try {
+    await connectDB();
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.email) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const profile = await Profile.findOne({ email: session.user.email });
+
+    if (!profile) {
+      return NextResponse.json({ message: 'Profile not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(profile, { status: 200 });
+  } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+    return NextResponse.json({ message: err.message || 'Server error' }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   console.log('/route/profile: ', ++apiCall);
   try {
@@ -19,6 +46,7 @@ export async function POST(req: NextRequest) {
       // For Google auth, we already have a verified email
       body.emailVerified = true;
     }
+    
     const profile = new Profile(body);
     
    await profile.save();
@@ -45,7 +73,7 @@ export async function PATCH(req: NextRequest) {
 
     const updates = await req.json();
 
-    // Flatten nested updates for MongoDB $set
+    // Flatten nested updates for MongoDB $set, do not change it. If you want to create another patch endpoint for profile, create a new route 
     const flattenedUpdates: Record<string, unknown> = {};
 
     const flatten = (obj: any, prefix = '') => { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -69,7 +97,7 @@ export async function PATCH(req: NextRequest) {
     );
 
     if (!result) {
-      return NextResponse.json({ message: 'Profile not found' }, { status: 404 });
+      return NextResponse.json({ message: 'Profile not found', result }, { status: 404 });
     }
 
     return NextResponse.json({ message: 'Profile updated successfully', profile: result }, { status: 200 });

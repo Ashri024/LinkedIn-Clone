@@ -1,4 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
+import { IExperience } from './Experience';
+import { IEducation } from './Education';
 
 export interface IProfile extends Document {
   authProvider: 'google' | 'credentials';
@@ -24,20 +26,48 @@ export interface IProfile extends Document {
     city?: string;
   };
 
-  contactInfo?: {
-    profileUrl?: string;
-    contactEmail?: string;
-    contactPhone?: string;
-    address?: string;
-    birthday?: { month: string; day: number };
-    website?: string;
-  };
+  address?: string;
+  birthday?: { month: string; day: number };
 
   connections: mongoose.Types.ObjectId[];
   followers: mongoose.Types.ObjectId[];
   posts: mongoose.Types.ObjectId[];
   experiences: mongoose.Types.ObjectId[];
   educations: mongoose.Types.ObjectId[];
+  skills: mongoose.Types.ObjectId[];
+}
+export interface IProfilePopulated extends Document {
+  authProvider: 'google' | 'credentials';
+  email: string;
+  emailVerified: boolean;
+  phone: string;
+  password?: string;
+  authStep: -1| 0 | 1 | 2 | 3 | 4 | 5; // -1 for no session, 0 for no user, 1 for basic info, 2 for more details, etc.
+  isStudent?: boolean; 
+  over16: boolean; 
+
+  firstName: string;
+  lastName: string;
+  profileImageUrl?: string;
+  bannerImageUrl?: string;
+  headline?: string;
+  about?: string;
+  lookingForJob?: ["yes", "no", "maybe"]; // Optional, can be used to track job seeking status
+
+  pronouns?: 'he/him' | 'she/her' | 'they/them' | 'other';
+  location?: {
+    countryRegion: string;
+    city?: string;
+  };
+
+  address?: string;
+  birthday?: { month: string; day: number };
+
+  connections: mongoose.Types.ObjectId[];
+  followers: mongoose.Types.ObjectId[];
+  posts: mongoose.Types.ObjectId[];
+  experiences: IExperience[];
+  educations: IEducation[];
   skills: mongoose.Types.ObjectId[];
 }
 
@@ -65,16 +95,10 @@ const ProfileSchema = new Schema<IProfile>({
     city:          { type: String },
   },
 
-  contactInfo: {
-    profileUrl:    { type: String },
-    contactEmail:  { type: String },
-    contactPhone:  { type: String },
-    address:       { type: String },
-    birthday: {
-      month:       { type: String },
-      day:         { type: Number }
-    },
-    website:       { type: String }
+  address:       { type: String },
+  birthday: {
+    month:       { type: String },
+    day:         { type: Number }
   },
 
   connections:   [{ type: Schema.Types.ObjectId, ref: 'Profile' }],

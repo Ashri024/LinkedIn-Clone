@@ -9,11 +9,13 @@ import { FaSearch } from "react-icons/fa";
 import ThemeToggle from "../ThemeToggle";
 import { useGlobalStore } from "@/store/globalStore";
 import { useRef, useEffect } from "react";
-
+import Link from "next/link";
+import DefaultProfile from "@/../public/default-profile.svg";
 export function DesktopNav() {
     const searchState = useGlobalStore((state) => state.searchState);
     const setSearchState = useGlobalStore((state) => state.setSearchState);
     const searchTabletRef = useRef<HTMLInputElement>(null);
+    const profile = useGlobalStore((state) => state.profile);
 
     useEffect(() => {
         if (searchState && searchTabletRef.current) {
@@ -30,13 +32,13 @@ export function DesktopNav() {
         }
     }
   return (
-    <div className="px-4 bg-white dark:bg-backgroundC-dark sticky top-0 z-10">
+    <div className="px-4 bg-white dark:bg-backgroundC-dark sticky top-0 z-50">
         <nav className="hidden md:flex gap-6 items-center justify-between sticky top-0 z-50 h-14 border-b-1 w-full max-w-[1200px] mx-auto">
             <div className={`flex items-center gap-4 ${searchState && 'w-full'}`}>
                 {/* Logo Section */}
-                <div className="flex items-center rounded-xs overflow-hidden">
+                <Link href={"/feed"} className="flex items-center rounded-xs overflow-hidden">
                     <Image src={Logo} alt="Logo" className="h-9 w-auto" />
-                </div>
+                </Link>
 
                 {/* Search Bar */}
                 <div className={`hidden lg:block min-w-64 relative `}>
@@ -87,14 +89,14 @@ export function DesktopNav() {
                 <div className="w-[0.5px] bg-slate-600 h-14"></div>
                 {/* Profile Avatar */}
                 <ThemeToggle />
-                <NavItem href="/profile"
+                <NavItem href={`/profile/${profile?.firstName.toLowerCase()}-${profile?.lastName.toLowerCase()}-${profile?._id}`}
                 label="Profile"
                 icon={
                     <Image
                     className="rounded-full"
                     width={25}
                     height={25}
-                    src="https://lh3.googleusercontent.com/a/ACg8ocIxsCBcNMQ-T6oODbRDk5pjTQ_ONWOEyos5N2HuW-1ZU7Kn-Q=s96-c"
+                    src={profile?.profileImageUrl || DefaultProfile}
                     alt="Profile Avatar"
                      />
                 }

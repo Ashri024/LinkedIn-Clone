@@ -44,6 +44,7 @@
   --color-backgroundC-dark: #1B1F23;
   --color-linkC: #71b7fb;
   --color-linkC-hover: #AAD6FF;
+  --color-successC: #37c898;
 }
 
 :root {
@@ -134,6 +135,12 @@
 .text-theme{
   @apply text-black dark:text-white;
 }
+.text-theme-secondary{
+  @apply text-black dark:text-white/80;
+}
+.text-theme2{
+  @apply text-backgroundC-dark dark:text-white;
+}
 .object-theme{
   @apply bg-black dark:bg-white;
 }
@@ -141,12 +148,22 @@
   @apply bg-backgroundC-light dark:bg-black;
 }
 
-.link-button{
-  @apply font-semibold border border-linkC text-linkC hover:bg-linkC/15 hover:text-linkC-hover transition duration-300 ;
+.linkedIn-button-outline{
+  @apply font-semibold border border-primaryC text-primaryC dark:border-linkC dark:text-linkC dark:hover:bg-linkC/15 hover:bg-primaryC/10 dark:hover:text-linkC-hover transition duration-300 cursor-pointer px-3 py-1 rounded-full ;
+}
+.linkedIn-button-filled{
+  @apply text-white dark:text-backgroundC-dark font-semibold bg-primaryC hover:bg-primaryC/80 dark:bg-linkC border-0 hover:dark:bg-linkC-hover cursor-pointer transition duration-300 px-4 py-1 rounded-full ;
 }
 
+.linkedIn-button-outline2{
+  @apply border border-muted-foreground text-muted-foreground hover:border-white hover:bg-white hover:text-backgroundC-dark cursor-pointer transition duration-300;
+}
+
+.linkedIn-button-white{
+  @apply w-fit px-4 py-1 border border-backgroundC-dark text-backgroundC-dark hover:bg-backgroundC-dark/10 dark:text-white/70 dark:hover:bg-white/20 dark:hover:text-white dark:hover:border-white cursor-pointer dark:border-white/80 rounded-3xl;
+}
 .linkedIn-link{
-  @apply text-linkC hover:underline hover:text-linkC-hover transition duration-300 cursor-pointer;
+  @apply dark:text-linkC font-semibold dark:font-normal text-primaryC hover:underline dark:hover:text-linkC-hover transition duration-300 cursor-pointer;
 }
 body{
   margin: 0;
@@ -216,4 +233,30 @@ body{
     transform-origin: left;
     transform: scalex(0.3);
   }
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  animation:
+    l20-1 0.8s infinite linear alternate,
+    l20-2 1.6s infinite linear;
+}
+@keyframes l20-1{
+   0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
+   12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
+   25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
+   50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+   62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+   75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
+   100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+}
+@keyframes l20-2{ 
+  0%    {transform:scaleY(1)  rotate(0deg)}
+  49.99%{transform:scaleY(1)  rotate(135deg)}
+  50%   {transform:scaleY(-1) rotate(0deg)}
+  100%  {transform:scaleY(-1) rotate(-135deg)}
 }

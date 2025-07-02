@@ -5,8 +5,8 @@ declare module "next-auth" {
     user: {
       authStep: authStepOptions; // Optional field for user status
       authProvider?: string;
-      firstName?: string;
-      lastName?: string;
+      firstName: string;
+      lastName: string;
       email?: string;
       image?: string | null;
       _id?: string; // Add _id to the session user
@@ -17,8 +17,8 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     authProvider?: string;
-    firstName?: string;
-    lastName?: string;
+    firstName: string;
+    lastName: string;
     email?: string;
     image?: string | null;
     _id?: string; // Add _id to the JWT token

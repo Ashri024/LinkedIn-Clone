@@ -70,7 +70,7 @@ export default function StepExperience({ onStudentToggle }: Props) {
         method: 'PATCH',
         body: JSON.stringify({ 
           authStep: 3,  
-          experiences: [experienceData.experience._id] 
+          headline: 'Worked at ' + data.company,
         }),
       }); 
       if (!profileUpdateRes.ok) {
@@ -81,10 +81,8 @@ export default function StepExperience({ onStudentToggle }: Props) {
       toast.success('Experience saved successfully');
       if(session?.user?.authProvider === 'credentials') {
       router.push('/auth/onboarding/more-details/profile-email-verification');
-      console.log('CREDENTIALS CREDENTIALS CREDENTIALS');
       } else {
         router.push('/auth/onboarding/more-details/profile-job-preference');
-        console.log('GOOGLE GOOGLE GOOGLE');
       }
     } catch (err) {
       console.error('Experience submission error:', err);

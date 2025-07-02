@@ -6,6 +6,8 @@ import { authOptions } from "@/lib/authOptions";
 import { userExistStatus } from "@/lib/db/backend/user";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import ProfileProvider from '@/app/providers/ProfileProvider';
+import GlobalDialog from "@/components/GlobalDialog";
 
 // app/(protected)/layout.tsx
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
@@ -21,12 +23,15 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   } 
   return (  
     <div className="min-h-screen flex flex-col">
-    <MobileHeader />
-    <DesktopNav />
-    {/* Background of opacity 0.4 component */}
+    <ProfileProvider>
+      <MobileHeader />
+      <DesktopNav />
+      {/* Background of opacity 0.4 component */}
       <BackgroundOpacity />
       <main className="flex-1">{children}</main>
-    <MobileFooterNav />
+      <MobileFooterNav />
+      <GlobalDialog /> 
+    </ProfileProvider>
   </div>
 
 )
