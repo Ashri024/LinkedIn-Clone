@@ -149,7 +149,7 @@
 }
 
 .linkedIn-button-outline{
-  @apply font-semibold border border-primaryC text-primaryC dark:border-linkC dark:text-linkC dark:hover:bg-linkC/15 hover:bg-primaryC/10 dark:hover:text-linkC-hover transition duration-300 cursor-pointer px-3 py-1 rounded-full ;
+  @apply font-semibold border border-primaryC text-primaryC dark:border-linkC dark:text-linkC dark:hover:bg-linkC/15 hover:bg-primaryC/10 dark:hover:text-linkC-hover transition duration-300 cursor-pointer px-4 py-1 rounded-full ;
 }
 .linkedIn-button-filled{
   @apply text-white dark:text-backgroundC-dark font-semibold bg-primaryC hover:bg-primaryC/80 dark:bg-linkC border-0 hover:dark:bg-linkC-hover cursor-pointer transition duration-300 px-4 py-1 rounded-full ;
@@ -165,6 +165,9 @@
 .linkedIn-link{
   @apply dark:text-linkC font-semibold dark:font-normal text-primaryC hover:underline dark:hover:text-linkC-hover transition duration-300 cursor-pointer;
 }
+.linkedIn-button-ghost{
+  @apply text-muted-foreground font-semibold  hover:text-primaryC dark:hover:text-muted-foreground dark:hover:bg-white/10 px-2 py-1 rounded cursor-pointer;
+} 
 body{
   margin: 0;
   padding: 0;

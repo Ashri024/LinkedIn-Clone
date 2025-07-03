@@ -12,7 +12,7 @@ function TabLink({ href, text }: { href: string; text: string }) {
         href={href}
         className={clsx(
           'pb-2 px-4 m-0',
-          isActive ? 'border-b-2  border-successC text-successC' : 'text-muted-foreground hover:text-white'
+          isActive ? 'border-b-2  border-successC text-successC' : 'text-muted-foreground hover:text-black dark:hover:text-white'
         )}
       >
         {text}

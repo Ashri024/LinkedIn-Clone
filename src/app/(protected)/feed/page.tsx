@@ -7,15 +7,15 @@ import { PostInput } from '@/components/feed/PostInput';
 import { PostCard } from '@/components/feed/PostCard';
 import { NewsPanel } from '@/components/feed/NewsPanel';
 import { postsData } from '@/data/feed/postsData';
+import Container from '@/components/Container';
 
 export default function FeedPage() {
   const { data: session } = useSession();
 
   return (
-    <main className="background-theme text-theme min-h-screen px-2 sm:px-4 md:px-6 lg:px-10 py-4 flex flex-col gap-6">
-      <div className="w-full flex flex-col md:flex-row gap-4 max-w-[1200px] mx-auto">
+    <Container>
         {/* Left Sidebar */}
-        <aside className="hidden md:block w-full max-w-[250px]">
+        <aside className="hidden md:block w-full max-w-[230px]">
         {/* <aside className="block lg:block w-full max-w-xs"> */}
           <FeedSidebar user={session?.user} />
         </aside>
@@ -33,7 +33,6 @@ export default function FeedPage() {
         <aside className="hidden lg:block w-full max-w-[300px]">
           <NewsPanel />
         </aside>
-      </div>
-    </main>
+        </Container>
   );
 }

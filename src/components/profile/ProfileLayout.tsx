@@ -1,5 +1,5 @@
 "use client";
-import Container from '../Container';
+// import Container from '../Container';
 import { ProfileAbout } from '@/components/profile/ProfileAbout';
 import { ProfileSidebar } from '@/components/profile/ProfileSidebar';
 import { ProfileSummary } from '@/components/profile/ProfileSummary';
@@ -41,9 +41,9 @@ if (!profile) {
     return <LoaderComponent text="Loading profile..." />;
   }
   return (
-    <Container>
-      <main className="flex flex-col md:flex-row px-2 gap-5 md:px-0 lg:px-10 pt-4 pb-16">
-        <div className="space-y-4 w-full">
+    <div className="min-h-screen background-theme text-theme">
+      <main className="w-full max-w-[1200px] mx-auto flex flex-col md:flex-row px-2 gap-5 md:px-2 lg:px-10 pt-4 pb-16 justify-center">
+        <div className="space-y-4 w-full flex-1 md:max-w-[400px] lg:max-w-[640px] xl:max-w-[800px]">
           <ProfileSummary profile={profile} isOwner={isOwner} />
           <ProfileAbout />
           <ProfileFeatured />
@@ -52,11 +52,11 @@ if (!profile) {
           <ProfileEducation />
           <ProfileSkills />
         </div>
-        <div className="flex flex-col gap-4 w-full max-w-[300px]">
+        <div className="flex flex-col gap-4 w-full md:max-w-[300px]">
           <ProfileSidebar />
         </div>
       </main>
       <ProfileFooter />
-    </Container>
+    </div>
   );
 }
