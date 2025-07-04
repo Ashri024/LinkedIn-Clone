@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import DefaultProfile from "@/../public/default-profile.svg";
-type Follower = {
+// import { FaCheck, FaPlus } from "react-icons/fa";
+import FollowToggleButton from "./FollowToggleButton";
+export type FollowSchema = {
   _id: string;
   firstName: string;
   lastName: string;
   headline: string;
-  profileImage: string;
-  isFollowingBack: boolean;
+  profileImageUrl: string;
 };
-function UserInstance({ follower }: { follower: Follower }) {
+function UserInstance({ follower, isFollowing }: { follower: FollowSchema, isFollowing?: boolean }) {
     const profileSlug = `/profile/${follower.firstName.toLowerCase()}-${follower.lastName.toLowerCase()}-${follower._id}`;
     return (
    <div key={follower._id} className="flex items-center justify-between border-b pb-4">
@@ -32,15 +33,7 @@ function UserInstance({ follower }: { follower: Follower }) {
                     </p>
                   </div>
                 </div>
-                {follower.isFollowingBack?
-                  <button className="text-sm linkedIn-button-white font-semibold">
-                    Following
-                  </button>
-                  :
-                  <button className="text-sm linkedIn-button-outline font-semibold">
-                    Follow
-                  </button>
-                }
+                <FollowToggleButton isFollowing={isFollowing || false} userViewedId={follower._id.toString()} className="text-sm" />
               </div>
     );
   }

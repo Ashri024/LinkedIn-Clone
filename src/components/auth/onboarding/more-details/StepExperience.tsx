@@ -59,8 +59,8 @@ export default function StepExperience({ onStudentToggle }: Props) {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      const experienceData = await res.json();
-      console.log('Experience submission response:', experienceData);
+      // const experienceData = await res.json();
+      // console.log('Experience submission response:', experienceData);
       if (!res.ok) {
         toast.error('Failed to save experience');
         return;
@@ -71,6 +71,7 @@ export default function StepExperience({ onStudentToggle }: Props) {
         body: JSON.stringify({ 
           authStep: 3,  
           headline: 'Worked at ' + data.company,
+          workingAt: data.company,
         }),
       }); 
       if (!profileUpdateRes.ok) {

@@ -63,7 +63,7 @@ function UserBanner({bannerImageUrl, isOwner, email}: {bannerImageUrl: string | 
   };
 
   return (
-    <div className={`z-0 relative w-full h-44 bg-gray-400 dark:bg-backgroundC-dark ${loading?"cursor-not-allowed": isOwner? "cursor-pointer":"cursor-default"} `} onClick={handleBannerClick}>
+    <div className={`z-0 relative w-full h-44  dark:bg-backgroundC-dark ${loading?"cursor-not-allowed": isOwner? "cursor-pointer":"cursor-default"} `} onClick={handleBannerClick}>
       <SmallLoader loading={loading} />
       <Image
         src={bannerImage || DefaultBanner}

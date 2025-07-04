@@ -2,10 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Education } from '@/models/Education';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Experience } from '@/models/Experience';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import bcrypt from 'bcryptjs';

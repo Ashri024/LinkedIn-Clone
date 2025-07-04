@@ -1,4 +1,5 @@
 // lib/db/user.ts
+import { SuggestionCardProps } from '@/components/myNetwork/SuggestionCard';
 import { connectDB } from '@/lib/mongodb';
 import { Profile, IProfile } from '@/models/Profile';
 
@@ -14,31 +15,23 @@ export async function userExistStatus(email?: string): Promise<IUserExistStatus>
   return user.authStep;
 }
 
-// interface IUserProfileResponse {
-//   status: number;
-//   error?: string;
-//   profile?: IProfilePopulated | undefined;
-// }
-// Fetch user by id
-// export async function getUserById(userId: string): Promise<IUserProfileResponse> {
-//   try {
-//     await connectDB();
+// Get all users from db except the current user
+export async function getAllUsersExceptCurrent(currentUserEmail: string): Promise<SuggestionCardProps[]> {
+  if (!currentUserEmail) return [];
 
-//     const profile = await Profile.findById(userId)
-//       .populate('educations')
-//       .populate('experiences')
-//       .lean() as IProfilePopulated | null;
+  await connectDB(); // ensures DB is connected
 
-//     if (!profile) {
-//       return { status: 404, error: "Profile not found" };
-//     }
+  const users = await Profile.find({ email: { $ne: currentUserEmail } })
+    .select('firstName lastName profileImageUrl email headline')
+    .lean();
 
-//     console.log("✅ Final populated profile:", profile);
-//     return { status: 200, profile: profile };
-//   } catch (error) {
-//     const errorMessage = error instanceof Error ? error.message : "Failed to fetch profile";
-//     console.error("❌ Error in GET /profile/[userId]:", errorMessage);
-//     return { status: 500, error: errorMessage };
-//   }
-// }
-
+  // Convert to plain objects and add _id as string
+  return users.map((user) => ({
+    _id: user._id.toString(),
+    firstName: user.firstName,
+    lastName: user.lastName,
+    profileImageUrl: user.profileImageUrl,
+    email: user.email,
+    headline: user.headline,
+  }));
+}

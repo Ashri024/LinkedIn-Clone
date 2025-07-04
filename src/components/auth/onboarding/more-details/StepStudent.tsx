@@ -19,6 +19,7 @@ const schema = z.object({
   fieldOfStudy: z.string().min(1, "Field of study is required"),
   startYear: z.coerce.number().min(1900, "Start year is required").max(2100),
   endYear: z.coerce.number().min(1900, "End year is required").max(2100),
+  over16: z.boolean(), 
 }).refine((data) => data.endYear >= data.startYear, {
   message: "End year must be greater than or equal to start year",
   path: ["endYear"],
@@ -44,8 +45,11 @@ export default function StepStudent({ onNotStudent }: Props) {
     formState: { errors, isSubmitting }
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    mode: 'onChange', // This will trigger validation on change
-  });
+    mode: 'onChange',
+    defaultValues: {
+      over16: true, // ✅ set default
+    }
+  });  
 
   // Watch all form values to check if form is valid
   const watchedValues = watch();
@@ -122,12 +126,16 @@ export default function StepStudent({ onNotStudent }: Props) {
           authStep: 3,  
           headline: 'Student at ' + data.school,
           isStudent: true,
+          workingAt: data.school,
+          over16: data.over16, 
         }),
       });
       if (!profileUpdateRes.ok) {
         toast.error('Failed to update profile step');
         return;
       }
+      const profileData = await profileUpdateRes.json();
+      console.log('Profile updated successfully: ', profileData);
       await update(); // Refresh session data
       toast.success('Education details saved successfully');
       if(session?.user?.authProvider === 'credentials') {
@@ -203,8 +211,12 @@ export default function StepStudent({ onNotStudent }: Props) {
 
         <div className="flex items-center justify-between p-3 rounded border">
           <span className="text-sm text-gray-300">I&apos;m over 16</span>
-          <Switch defaultChecked />
+          <Switch
+            checked={watch('over16')}
+            onCheckedChange={(val) => setValue('over16', val)}
+          />
         </div>
+
 
         <Button variant="link" className="w-full" type="button" onClick={onNotStudent}>
           I&apos;m not a student

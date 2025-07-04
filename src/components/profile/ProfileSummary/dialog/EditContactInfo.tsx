@@ -1,6 +1,6 @@
 'use client';
 
-import { IProfilePopulated } from '@/models/Profile';
+import { IProfile } from '@/models/Profile';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +24,7 @@ const EditContactSchema = z.object({
 
 type EditContactType = z.infer<typeof EditContactSchema>;
 
-export default function EditContactInfo({ profile, setProfile, isOwner }: { profile: IProfilePopulated, setProfile: (profile: IProfilePopulated) => void; isOwner: boolean }) {
+export default function EditContactInfo({ profile, setProfile, isOwner }: { profile: IProfile, setProfile: (profile: IProfile) => void; isOwner: boolean }) {
   const {
     register,
     handleSubmit,

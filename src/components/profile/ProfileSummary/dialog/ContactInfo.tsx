@@ -1,7 +1,7 @@
 // /components/profile/dialogs/ContactInfo.tsx
 import { useDialogStore } from '@/store/dialogStore';
 import EditContactInfo from './EditContactInfo';
-import { IProfilePopulated } from '@/models/Profile';
+import { IProfile } from '@/models/Profile';
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
 import { SiLinkedin } from "react-icons/si";
@@ -10,7 +10,7 @@ import { LuPhone } from "react-icons/lu";
 import { PiAddressBook } from "react-icons/pi";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 
-export default function ContactInfo({   profile,isOwner,setProfile }: { profile: IProfilePopulated, isOwner: boolean,setProfile: (profile: IProfilePopulated) => void; }) {
+export default function ContactInfo({   profile,isOwner,setProfile }: { profile: IProfile, isOwner: boolean,setProfile: (profile: IProfile) => void; }) {
   return (
     <div className="pb-4">
       <h2 className="text-xl font-semibold pb-4 border-b">{profile.firstName} {profile.lastName}</h2>

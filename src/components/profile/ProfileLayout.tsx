@@ -9,15 +9,15 @@ import { ProfileExperience } from '@/components/profile/ProfileExperience';
 import { ProfileEducation } from '@/components/profile/ProfileEducation';
 import { ProfileSkills } from '@/components/profile/ProfileSkills';
 import { ProfileFooter } from '@/components/profile/ProfileFooter';
-import { IProfilePopulated } from '@/models/Profile';
+import { IProfile } from '@/models/Profile';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import LoaderComponent from '../LoaderComponent';
 
-// export default function ProfileLayout({ profile, isOwner }: { profile: IProfilePopulated, isOwner: boolean }) {
+// export default function ProfileLayout({ profile, isOwner }: { profile: IProfile, isOwner: boolean }) {
 export default function ProfileLayout({ mongoDbId }: { mongoDbId: string | undefined }) {
   // Fetch the profile data based on mongoDbId
-  const [profile, setProfile] = useState<IProfilePopulated | null>(null);
+  const [profile, setProfile] = useState<IProfile | null>(null);
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const {data:session} = useSession();
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function ProfileLayout({ mongoDbId }: { mongoDbId: string | undef
         console.error(errorData.error || 'Failed to fetch profile');
         return;
       }
-      const profileData: IProfilePopulated = await res.json();
+      const profileData: IProfile = await res.json();
       setProfile(profileData);
       // Assuming you have a way to determine if the user is the owner
       // This could be from session data or another API call
