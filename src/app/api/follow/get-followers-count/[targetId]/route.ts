@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getFollowersCount } from "@/lib/db/backend/follower";
 
 // GET /api/followers-count/:targetId
-export async function GET(req: NextRequest, { params }: { params: { targetId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ targetId: string }> }) {
   const { targetId } = await params;
   try {
     await connectDB();

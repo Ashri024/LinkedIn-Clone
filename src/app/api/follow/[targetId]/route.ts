@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 // Check if a user is following another user
-export async function GET(req: NextRequest, { params }: { params: { targetId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ targetId: string }> }) {
     const session = await getServerSession(authOptions);
     const currentUserId = session?.user?._id;
     const {targetId} = await params;
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest, { params }: { params: { targetId: st
   }
 
 // POST /api/follow/:targetId
-export async function POST(req: NextRequest, { params }: { params: { targetId: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ targetId: string }> }) {
     const session = await getServerSession(authOptions);
     const currentUserId = session?.user?._id;
     const {targetId} = await params;
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest, { params }: { params: { targetId: s
   }
 
   // DELETE /api/follow/:targetId
-export async function DELETE(req: NextRequest, { params }: { params: { targetId: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ targetId: string }> }) {
     const session = await getServerSession(authOptions);
     const currentUserId = session?.user?._id;
     const {targetId} = await params;

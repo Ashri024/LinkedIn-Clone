@@ -5,7 +5,7 @@ import { authOptions } from '@/lib/authOptions';
 import { sendConnectionRequest,getConnection, removeConnection, withdrawRequest } from '@/lib/db/backend/connection';
 
 // Get single connection request by receiverId
-export async function GET(request: NextRequest, { params }: { params: { receiverId: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ receiverId: string }> }) {
   const session = await getServerSession(authOptions);
   const userId = session?.user?._id;
   const {receiverId} = await params;
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest, { params }: { params: { receiver
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { receiverId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ receiverId: string }> }) {
   const session = await getServerSession(authOptions);
   const senderId = session?.user?._id;
   const {receiverId} = await params
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest, { params }: { params: { receive
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { receiverId: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ receiverId: string }> }) {
   const session = await getServerSession(authOptions);
   const userId = session?.user?._id;
   const {receiverId} = await params;

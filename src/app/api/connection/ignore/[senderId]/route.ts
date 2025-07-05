@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { rejectRequest } from '@/lib/db/backend/connection';
 
-export async function POST(request: NextRequest, { params }: { params: { senderId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ senderId: string }> }) {
   const session = await getServerSession(authOptions);
   const receiverId = session?.user?._id;
   const {senderId} = await params;

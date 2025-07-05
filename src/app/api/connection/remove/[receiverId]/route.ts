@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { removeConnection } from "@/lib/db/backend/connection";
 
-export async function DELETE(request: NextRequest, { params }: { params: { receiverId: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ receiverId: string }> }) {
     const session = await getServerSession(authOptions);
     const userId = session?.user?._id;
     const {receiverId} = await params;
