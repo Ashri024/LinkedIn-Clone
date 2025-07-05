@@ -5,10 +5,10 @@ import { Profile } from '@/models/Profile';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import bcrypt from 'bcryptjs';
-let apiCall = 0;
+// let apiCall = 0;
 
 export async function GET() {
-  console.log('/route/profile: ', ++apiCall);
+  // console.log('/route/profile: ', ++apiCall);
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -30,7 +30,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  console.log('/route/profile: ', ++apiCall);
+  // console.log('/route/profile: ', ++apiCall);
   try {
     await connectDB();
     await Profile.init();

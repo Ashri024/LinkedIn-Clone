@@ -1,8 +1,29 @@
 import { authOptions } from "@/lib/authOptions";
+import { isFollowing } from "@/lib/db/backend/follower";
 import { connectDB } from "@/lib/mongodb";
 import { Follow } from "@/models/Follow";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+
+// Check if a user is following another user
+export async function GET(req: NextRequest, { params }: { params: { targetId: string } }) {
+    const session = await getServerSession(authOptions);
+    const currentUserId = session?.user?._id;
+    const {targetId} = await params;
+
+    if (!currentUserId || currentUserId === targetId) {
+      return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    }
+
+    try {
+      await connectDB();
+      const follow = await isFollowing(currentUserId, targetId);
+      return NextResponse.json({ isFollowing: follow.isFollowing }, { status: 200 });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Server error";
+      return NextResponse.json({ error: errorMessage }, { status: 500 });
+    }
+  }
 
 // POST /api/follow/:targetId
 export async function POST(req: NextRequest, { params }: { params: { targetId: string } }) {

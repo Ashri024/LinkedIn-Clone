@@ -15,7 +15,7 @@ function UserProfile({profileImageUrl, isOwner}: {profileImageUrl?: string | und
     
       // If profileImageUrl is provided, use it; otherwise, use the default profile image
       useEffect(() => {
-        console.log("profileImageUrl: ", profileImageUrl);
+        // console.log("profileImageUrl: ", profileImageUrl);
         if (profileImageUrl) {
           setProfileImage(profileImageUrl);
         }
@@ -25,7 +25,7 @@ function UserProfile({profileImageUrl, isOwner}: {profileImageUrl?: string | und
     
     const handleImageClick = () => {
         // Only allow upload if the current image is the default
-        console.log("profileImageUrl: ", profileImage);
+        // console.log("profileImageUrl: ", profileImage);
         if (fileInputRef.current && !loading && isOwner) {
           fileInputRef.current.click();
         }

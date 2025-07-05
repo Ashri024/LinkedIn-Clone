@@ -3,6 +3,7 @@ import Link from "next/link";
 import DefaultProfile from "@/../public/default-profile.svg";
 // import { FaCheck, FaPlus } from "react-icons/fa";
 import FollowToggleButton from "./FollowToggleButton";
+import { formatProfileURL } from "@/lib/formatProfileURL";
 export type FollowSchema = {
   _id: string;
   firstName: string;
@@ -11,7 +12,7 @@ export type FollowSchema = {
   profileImageUrl: string;
 };
 function UserInstance({ follower, isFollowing }: { follower: FollowSchema, isFollowing?: boolean }) {
-    const profileSlug = `/profile/${follower.firstName.toLowerCase()}-${follower.lastName.toLowerCase()}-${follower._id}`;
+    const profileSlug = `/profile/${formatProfileURL(follower.firstName, follower.lastName || 'l', follower._id)}`;
     return (
    <div key={follower._id} className="flex items-center justify-between border-b pb-4">
                 <div className="flex items-center gap-4">

@@ -15,9 +15,9 @@ export default function ProfileExperiencePage() {
   useEffect(() => {
   if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
-      console.log("User session /profile-experience:", session?.user?.authStep);
+      // console.log("User session /profile-experience:", session?.user?.authStep);
       if(session?.user?.authStep !== 2) {
-        console.log("/STEP-EXPERIENCE: NOT EQUALS TO 2 IN PROFILE-EXPERIENCE");
+        // console.log("/STEP-EXPERIENCE: NOT EQUALS TO 2 IN PROFILE-EXPERIENCE");
         router.replace('/auth/onboarding/more-details');
         return;
       }

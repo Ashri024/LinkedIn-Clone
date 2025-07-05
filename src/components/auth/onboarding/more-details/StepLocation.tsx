@@ -18,9 +18,9 @@ export default function StepLocation() {
   useEffect(() => {
   if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
-      console.log("Authstep in /profile-location:", session?.user?.authStep);
+      // console.log("Authstep in /profile-location:", session?.user?.authStep);
       if(session?.user?.authStep !== 1) {
-        console.log("/STEP-LOCATION: NOT EQUALS TO 1 IN PROFILE-LOCATION")
+        // console.log("/STEP-LOCATION: NOT EQUALS TO 1 IN PROFILE-LOCATION")
         router.replace('/auth/onboarding/more-details');
         return;
       }

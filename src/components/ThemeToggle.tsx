@@ -10,8 +10,8 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true);
-    console.log('Resolved theme:', resolvedTheme);
-  }, [resolvedTheme]);
+    // console.log('Resolved theme:', resolvedTheme);
+  }, []);
 
   if (!mounted) return null;
 

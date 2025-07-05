@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Profile } from "@/models/Profile";
 
-let apiCall = 0;
+// let apiCall = 0;
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
-  console.log('apiCall /profile/userId: ', ++apiCall);
+  // console.log('apiCall /profile/userId: ', ++apiCall);
   const { userId } = await params;
 
   try {

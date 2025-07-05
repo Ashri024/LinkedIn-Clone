@@ -43,7 +43,7 @@ export default function EditContactInfo({ profile, setProfile, isOwner }: { prof
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: EditContactType) => {
-    console.log("IsOwner:   ", isOwner);
+    // console.log("IsOwner:   ", isOwner);
     if (!isOwner) {
       toast.error('You are not authorized to edit this profile');
       return;
@@ -70,7 +70,7 @@ export default function EditContactInfo({ profile, setProfile, isOwner }: { prof
         day: selectedDay,
       },
     };
-    console.log("Submitting contact info:", payload);
+    // console.log("Submitting contact info:", payload);
     setLoading(true);
     try {
       const res = await fetch('/api/profile', {
@@ -87,7 +87,7 @@ export default function EditContactInfo({ profile, setProfile, isOwner }: { prof
       }
       setProfile(result.profile); 
       toast.success('Contact info updated successfully');
-      console.log('✅ Updated Profile:', result.profile);
+      // console.log('✅ Updated Profile:', result.profile);
       useDialogStore.getState().openDialog(
         <ContactInfo isOwner={isOwner} profile={result.profile} setProfile={setProfile} />
       ); // Open dialog with updated profile info

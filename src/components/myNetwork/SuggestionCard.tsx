@@ -4,11 +4,9 @@ import Image from 'next/image';
 import DefaultProfile from '@/../public/default-profile.svg';
 import { formatProfileURL } from '@/lib/formatProfileURL';
 import Link from 'next/link';
-// import { FaCheck, FaPlus, FaUserFriends } from 'react-icons/fa';
-// import { useState } from 'react';
-// import toast from 'react-hot-toast';
 import FollowToggleButton from './FollowToggleButton';
-import { FaUserFriends } from 'react-icons/fa';
+import ConnectionToggleButton from './ConnectionToggleButton';
+import { ConnectionStatus } from '@/models/Connection';
 
 export type SuggestionCardProps = {
     _id: string;
@@ -19,7 +17,7 @@ export type SuggestionCardProps = {
     email: string;
 };
 
-function SuggestionCard({ data, isFollowing }: {data:SuggestionCardProps, isFollowing: boolean}) {
+function SuggestionCard({ data, isFollowing, connected }: {data:SuggestionCardProps, isFollowing: boolean, connected?: ConnectionStatus}) {
   
 
   return (
@@ -38,7 +36,7 @@ function SuggestionCard({ data, isFollowing }: {data:SuggestionCardProps, isFoll
               height={90}
               className="rounded-full object-cover mb-2"
             />
-            <button className="absolute -top-2 right-0 text-xl text-gray-400">x</button>
+            {/* <button className="absolute -top-2 right-0 text-xl text-gray-400">x</button> */}
           </div>
           <div className="text-center">
             <p className="font-medium w-full">{data.firstName+" "+data.lastName}</p>
@@ -46,21 +44,7 @@ function SuggestionCard({ data, isFollowing }: {data:SuggestionCardProps, isFoll
           </div>
         </div>
       <div className='flex flex-col gap-2'>
-      <button className="w-full text-sm linkedIn-button-filled flex items-center justify-center gap-2">
-        <FaUserFriends size={18} />
-        Connect</button>
-        {/* <button className={`w-full text-sm ${isFollowingState?"linkedIn-button-outline2":"linkedIn-button-outline"} flex items-center justify-center gap-1`}
-        onClick={(e)=>{
-          e.stopPropagation();
-          e.preventDefault();
-          toggleFollow();
-        }}
-        disabled={loading}
-        >
-          {isFollowingState ?<FaCheck size={14} /> : <FaPlus size={14} />}
-        
-        {isFollowingState ? 'Following' : 'Follow'}
-        </button> */}
+        <ConnectionToggleButton className='w-full text-sm' connected={connected} receiverId={data._id}/>
         <FollowToggleButton isFollowing={isFollowing} userViewedId={data._id} className='w-full text-sm' />
       </div>
     </Link>

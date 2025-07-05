@@ -3,6 +3,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 // import { IEducation } from './Education';
 
 export interface IProfile extends Document {
+  _id: string; // MongoDB ObjectId as a string
   authProvider: 'google' | 'credentials';
   email: string;
   emailVerified: boolean;

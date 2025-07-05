@@ -20,7 +20,7 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     if (res.ok) {
       const data = await res.json();
       set({ profile: data });
-      console.log("Profile fetched successfully: ", data);
+      // console.log("Profile fetched successfully: ", data);
     }
   },
 }));

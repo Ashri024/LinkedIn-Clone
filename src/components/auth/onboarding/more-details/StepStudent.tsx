@@ -134,8 +134,8 @@ export default function StepStudent({ onNotStudent }: Props) {
         toast.error('Failed to update profile step');
         return;
       }
-      const profileData = await profileUpdateRes.json();
-      console.log('Profile updated successfully: ', profileData);
+      await profileUpdateRes.json();
+      // console.log('Profile updated successfully: ', profileData);
       await update(); // Refresh session data
       toast.success('Education details saved successfully');
       if(session?.user?.authProvider === 'credentials') {

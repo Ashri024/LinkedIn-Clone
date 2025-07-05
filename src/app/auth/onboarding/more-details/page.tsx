@@ -13,7 +13,7 @@ function MoreDetailsPage() {
       if (status !== 'authenticated' || !session?.user) return;
     
       const checkAndRedirect = async () => {
-        console.log("authstep in /more-details:", session.user.authStep);
+        // console.log("authstep in /more-details:", session.user.authStep);
     
         const stepPaths = {
           1: '/auth/onboarding/more-details/profile-location',

@@ -4,11 +4,11 @@ import { authOptions } from '@/lib/authOptions';
 import { connectDB } from '@/lib/mongodb';
 import { Education } from '@/models/Education';
 import { Profile } from '@/models/Profile';
-let apiCall =0;
+// let apiCall =0;
 // /api/education
 // /auth/onboarding
 export async function POST(req: NextRequest) {
-  console.log('/route/education: ', ++apiCall);
+  // console.log('/route/education: ', ++apiCall);
   try {
     await connectDB();
     const session = await getServerSession(authOptions);

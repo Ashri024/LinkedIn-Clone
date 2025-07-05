@@ -24,7 +24,7 @@ export default function StepOne({ onNext }: StepOneProps) {
   };
 
   const handleBack = () => {
-    console.log("SIgnUp Mode:", session?.user);
+    // console.log("SIgnUp Mode:", session?.user);
     if (session?.user.authProvider === 'google') {
       signOut();
     } else {

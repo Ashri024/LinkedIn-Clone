@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 function UserAbout({initialProfile, isOwner}: {initialProfile: IProfile, isOwner: boolean}) {
   const [profile, setProfile] = useState<IProfile>(initialProfile);
   const [followersCount, setFollowersCount] = useState<number>(0);
-
+  const [connectionsCount, setConnectionsCount] = useState<number>(0);
   useEffect(() => {
     setProfile(initialProfile);
     // Fetch followers count from the profile /api/follow/get-followers-count/:targetId endpoint
@@ -27,8 +27,24 @@ function UserAbout({initialProfile, isOwner}: {initialProfile: IProfile, isOwner
         console.error('Error fetching followers count:', error);
       }
     };
+    const fetchConnectionsCount = async () => {
+      try {
+        const response = await fetch(`/api/connection/count/${initialProfile._id}`);
+        if (!response.ok) {
+          toast.error('Failed to fetch connections count');
+          return;
+        }
+        const data = await response.json();
+        setConnectionsCount(data.connectionCount ?? 0); // Assuming the API returns { connectionCount: number }
+      } catch (error) {
+        console.error('Error fetching connections count:', error);
+      }
+    }
+
     if(isOwner)
     fetchFollowersCount();
+
+    fetchConnectionsCount();
   }, [initialProfile, isOwner]);
   return (
     <>
@@ -53,7 +69,7 @@ function UserAbout({initialProfile, isOwner}: {initialProfile: IProfile, isOwner
           <div className='flex gap-2'>
             {isOwner && <><Link href={"/myNetwork/network-manager/people-follow/followers/"} className="text-sm linkedIn-link">{followersCount} followers</Link>
             <p className="text-sm text-muted-foreground">·</p></>}
-            <Link href={"/myNetwork/invite-connect/connections/"} className="text-sm linkedIn-link">0 connections</Link>
+            <Link href={"/myNetwork/invite-connect/connections/"} className="text-sm linkedIn-link">{connectionsCount} connections</Link>
           </div>
         </div>
       </div>

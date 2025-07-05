@@ -5,9 +5,9 @@ import { connectDB } from '@/lib/mongodb';
 import { Experience } from '@/models/Experience';
 import { Profile } from '@/models/Profile';
 // import { Profile } from '@/models/Profile';
-let apiCall = 0;
+// let apiCall = 0;
 export async function POST(req: NextRequest) {
-  console.log('/route/experience: ', ++apiCall);
+  // console.log('/route/experience: ', ++apiCall);
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     });
     
     const  newExperienceSaved= await newExperience.save();
-    console.log('New experience created:', newExperience.id);
+    // console.log('New experience created:', newExperience.id);
     if (!newExperienceSaved) {
       return NextResponse.json({ message: 'Experience not created' }, { status: 400 });
     }

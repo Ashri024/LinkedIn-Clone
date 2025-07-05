@@ -54,7 +54,7 @@ export default function SignInPage() {
     if (status === 'loading') return; // Wait for session to load
     
     const checkAndRedirect = async () => {
-      console.log("Session authstep /signup:", session?.user?.authStep);
+      // console.log("Session authstep /signup:", session?.user?.authStep);
 
       if(session?.user?.authStep===undefined) {
         return;

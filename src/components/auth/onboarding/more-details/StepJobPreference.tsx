@@ -23,15 +23,15 @@ export default function StepJobPreference() {
   useEffect(() => {
     if (status === 'loading') return; // Wait for session to load
     const checkAndRedirect = async () => {
-      console.log("Session /profile-preference authstep:", session?.user?.authStep);
+      // console.log("Session /profile-preference authstep:", session?.user?.authStep);
       
       if(session?.user?.authStep !== 4 && session?.user?.authProvider === 'credentials') {
-        console.log("/STEP-JOB-PREFERENCE: Redirecting to more details page");
+        // console.log("/STEP-JOB-PREFERENCE: Redirecting to more details page");
         router.replace('/auth/onboarding/more-details');
         return;
       }
       if(session?.user?.authStep !== 3 && session?.user?.authProvider === 'google') {
-        console.log("/STEP-JOB-PREFERENCE: Redirecting to profile job preference for Google users");
+        // console.log("/STEP-JOB-PREFERENCE: Redirecting to profile job preference for Google users");
         router.replace('/auth/onboarding/more-details');
         return;
       }

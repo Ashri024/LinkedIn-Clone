@@ -6,6 +6,7 @@ export type PeopleFollowData = {
   followers: FollowSchema[];
   following: FollowSchema[];
   followingIds?: string[];
+  followersIds?: string[];
 };
 
 const PeopleFollowContext = createContext<PeopleFollowData | undefined>(undefined);

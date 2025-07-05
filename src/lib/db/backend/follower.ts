@@ -11,6 +11,19 @@ await connectDB();
 return Follow.countDocuments({ follower: userId });
 }
   
+// check if i follows another user or not
+export async function isFollowing(followerId: string, followingId: string) {
+  if (!followerId || !followingId) {
+    return { status: 400, error: "Follower ID and Following ID are required" };
+  }
+  await connectDB();
+  const follow = await Follow.findOne({ follower: followerId, following: followingId });
+  return {
+    status: 200,
+    isFollowing: !!follow,
+  };
+}
+
 export async function getFollowers(userId: string) {
   if (!userId) {
     return { status: 400, error: "User ID is required" };

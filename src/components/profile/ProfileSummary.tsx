@@ -23,7 +23,7 @@ export const ProfileSummary = ({profile, isOwner}: {profile: IProfile, isOwner: 
         <UserSchool
         initialProfile={profile}
         />
-        <ProfileOptions isOwner={isOwner}/>
+        <ProfileOptions isOwner={isOwner} userId={profile._id}/>
       </CardContent>
     </Card>
   );

@@ -24,7 +24,7 @@ export function DesktopNav() {
     }, [searchState]);
 
     const toggleNavItems = () => {
-        console.log("Toggle Nav Items Clicked: ", searchState);
+        // console.log("Toggle Nav Items Clicked: ", searchState);
         setSearchState(!searchState);
     //    Make the search input focused when toggled
         if (searchTabletRef.current && !searchState) {

@@ -14,7 +14,7 @@ function UserBanner({bannerImageUrl, isOwner, email}: {bannerImageUrl: string | 
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("bannerImageUrl: ",bannerImageUrl);
+    // console.log("bannerImageUrl: ",bannerImageUrl);
     if (bannerImageUrl) {
       setBannerImage(bannerImageUrl);
     }
@@ -29,7 +29,7 @@ function UserBanner({bannerImageUrl, isOwner, email}: {bannerImageUrl: string | 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isOwner) return;
     const file = e.target.files?.[0];
-    console.log("session.user.email: ", email);
+    // console.log("session.user.email: ", email);
     if (!file || !email) return;
     if (file.size > MAX_FILE_SIZE) {
       toast.error("File size exceeds 10MB. Please upload a smaller image.");
@@ -55,8 +55,8 @@ function UserBanner({bannerImageUrl, isOwner, email}: {bannerImageUrl: string | 
       }
       setLoading(false); // Reset loading state
       setBannerImage(uploadData.secure_url); // Update banner image state
-      const data = await res.json();
-      console.log("Banner updated successfully: ", data);
+      await res.json();
+      // console.log("Banner updated successfully: ", data);
       // Optionally, refresh the page or state here
       toast.success('Banner image updated successfully');
     }

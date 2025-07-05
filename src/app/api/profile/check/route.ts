@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import { userExistStatus } from '@/lib/db/backend/user';
-  let apiCall = 0;
+  // let apiCall = 0;
 export async function POST(req: NextRequest) {
-  console.log('/route/profile/check: ', ++apiCall);
+  // console.log('/route/profile/check: ', ++apiCall);
   try {
     const { email } = await req.json();
     if (!email) {

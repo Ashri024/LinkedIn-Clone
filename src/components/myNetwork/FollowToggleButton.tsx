@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { FaCheck, FaPlus } from 'react-icons/fa';
 
@@ -7,14 +7,18 @@ function FollowToggleButton({ isFollowing, userViewedId , className}: { isFollow
     const [isFollowingState, setIsFollowingState] = useState(isFollowing);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setIsFollowingState(isFollowing);
+  }, [isFollowing]);
+
   const toggleFollow =async () => {
     setIsFollowingState((prev) => !prev);
     const method = isFollowingState ? 'DELETE' : 'POST';
     setLoading(true);
     const res = await fetch(`/api/follow/${userViewedId}`, { method });
     setLoading(false);
-    const response = await res.json();
-    console.log('Response:', response);
+    await res.json();
+    // console.log('Response:', response);
     if (!res.ok) {
       const errorData = await res.json();
       console.error('Error:', errorData.error || 'Failed to toggle follow');

@@ -66,7 +66,7 @@ export default function SignUpPage() {
   useEffect(() => {
     const checkAndRedirect = async () => {
       if (status === 'loading') return;
-      console.log("Session authstep /signup:", session?.user?.authStep);
+      // console.log("Session authstep /signup:", session?.user?.authStep);
       
       if(session?.user?.authStep===undefined) {
         return;

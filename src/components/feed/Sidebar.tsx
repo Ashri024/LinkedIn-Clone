@@ -5,16 +5,12 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { BadgeCheck } from "lucide-react";
 import { Session } from "next-auth";
-import { useEffect } from "react";
 
 type Props = {
   user?: Session["user"];
 };
 
 export const FeedSidebar = ({ user }: Props) => {
-    useEffect(()=>{
-        console.log("User data in sidebar:", user);
-    }, [user]);
   return (
     <Card className="bg-white dark:bg-backgroundC-dark p-4 rounded-xl shadow-sm text-theme flex flex-col gap-4">
       {/* Profile Card */}

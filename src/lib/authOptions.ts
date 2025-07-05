@@ -6,8 +6,8 @@ import { connectDB } from '@/lib/mongodb';
 import { Profile } from '@/models/Profile';
 import { AdapterUser } from "next-auth/adapters";
 import { authStepOptions } from '@/types/next-auth';
-let jwtCall = 0;
-let sessionCall = 0;
+// let jwtCall = 0;
+// let sessionCall = 0;
 export interface SafeUser {
   _id: string;
   email: string;
@@ -68,7 +68,7 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("JWT callback called: ", ++jwtCall);
+      // console.log("JWT callback called: ", ++jwtCall);
       await connectDB();
       if (user) {
         const customUser = user as CustomUser;
@@ -95,7 +95,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log("Session callback called: ", ++sessionCall);
+      // console.log("Session callback called: ", ++sessionCall);
       await connectDB();
       if (session.user) {
         // PAHLE KA CODE
