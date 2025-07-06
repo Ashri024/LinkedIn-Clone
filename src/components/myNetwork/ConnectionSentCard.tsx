@@ -15,8 +15,8 @@ export type ConnectionSentCardProps = {
   followsYou?: boolean;
 };
 
-function ConnectionSentCard({ data }: { data: ConnectionSentCardProps }) {
-  const [withdrawn, setWithdrawn] = useState(false);
+function ConnectionSentCard({ data ,withdrawnS}: { data: ConnectionSentCardProps, withdrawnS?: boolean }) {
+  const [withdrawn, setWithdrawn] = useState(withdrawnS || false);
   const [loading, setLoading] = useState(false);
   const name = `${data.firstName} ${data.lastName || ''}`; // Combine first and last name for display
 
@@ -67,7 +67,7 @@ function ConnectionSentCard({ data }: { data: ConnectionSentCardProps }) {
           </button>
         ) : (
           <button className='linkedIn-button-outline' onClick={handleWithdraw} disabled={loading}>
-            {loading ? '...' : 'Withdraw'}
+           Withdraw
           </button>
         )}
       </div>

@@ -67,9 +67,10 @@ function UserAbout({initialProfile, isOwner}: {initialProfile: IProfile, isOwner
               Contact info</span>
           </p>
           <div className='flex gap-2'>
-            {isOwner && <><Link href={"/myNetwork/network-manager/people-follow/followers/"} className="text-sm linkedIn-link">{followersCount} followers</Link>
-            <p className="text-sm text-muted-foreground">·</p></>}
-            <Link href={"/myNetwork/invite-connect/connections/"} className="text-sm linkedIn-link">{connectionsCount} connections</Link>
+            {isOwner ? <><Link href={"/myNetwork/network-manager/people-follow/followers/"} className="text-sm linkedIn-link">{followersCount} followers</Link>
+            <p className="text-sm text-muted-foreground">·</p>
+            <Link href={"/myNetwork/invite-connect/connections/"} className="text-sm linkedIn-link">{connectionsCount} connections</Link> </>:
+            <p className="text-sm text-muted-foreground">{connectionsCount} connections</p>}
           </div>
         </div>
       </div>
