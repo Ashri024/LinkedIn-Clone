@@ -8,7 +8,7 @@ import { PostActivityComponent } from './activity/PostActivityComponent';
 import CommentActivityComponent from './activity/CommentActivityComponent';
 import VideoActivityComponent from './activity/VideoActivityComponent';
 import ImageActivityComponent from './activity/ImageActivityComponent';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 
 const activityTabs = [
   { label: 'Posts', value: 'posts' },
@@ -18,10 +18,8 @@ const activityTabs = [
 ];
 
 
-export const ProfileActivity = () => {
+export const ProfileActivity = ({userId, isOwner}: {userId: string, isOwner:boolean}) => {
   const [selected, setSelected] = useState('posts');
-  const {data:session} = useSession();
-  if (!session?.user || !session?.user?._id) return null;
 
   return (
     <Card className="dark:bg-backgroundC-dark border-0">
@@ -51,10 +49,10 @@ export const ProfileActivity = () => {
 
         {/* Posts */}
         <div>
-        {selected === 'posts' && <PostActivityComponent userId={session?.user?._id} />}
-        {selected === 'comments' && <CommentActivityComponent userId={session?.user?._id} />}
-        {selected === 'videos' && <VideoActivityComponent userId={session?.user?._id} />}
-        {selected === 'images' && <ImageActivityComponent userId={session?.user?._id} />}
+        {selected === 'posts' && <PostActivityComponent userId={userId} isOwner={isOwner} />}
+        {selected === 'comments' && <CommentActivityComponent userId={userId} />}
+        {selected === 'videos' && <VideoActivityComponent userId={userId} />}
+        {selected === 'images' && <ImageActivityComponent userId={userId} />}
       </div>
       </CardContent>
     </Card>

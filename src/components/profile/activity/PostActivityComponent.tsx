@@ -7,7 +7,7 @@ import PostActivityCard from './PostActivityCard';
 // import { PostImageGallery } from '@/components/post/PostImageGallery';
 
 
-export function PostActivityComponent({ userId }: { userId: string }) {
+export function PostActivityComponent({ userId, isOwner }: { userId: string, isOwner: boolean }) {
   const [posts, setPosts] = useState<PostCardProps[]>([]);
   const [startIdx, setStartIdx] = useState(0);
   const [visibleCount, setVisibleCount] = useState(2);
@@ -68,11 +68,17 @@ useEffect(() => {
         >
           <ChevronLeft />
         </button>
-        <div className="flex gap-4 flex-1 overflow-x-hidden ">
-          {posts.slice(startIdx, endIdx).map(post => (
-          <PostActivityCard key={post._id} post={post} />
-          ))}
-        </div>
+        {posts.length === 1 ? (
+                <div className="flex flex-1 max-w-[350px] w-full border border-border rounded-md">
+                <PostActivityCard post={posts[0]} isOwner={isOwner} />
+            </div>
+            ) : (
+            <div className="flex gap-4 flex-1 overflow-x-hidden">
+                {posts.slice(startIdx, endIdx).map(post => (
+                <PostActivityCard key={post._id} post={post} isOwner={isOwner} />
+                ))}
+            </div>
+            )}
         <button
           onClick={handleNext}
           className="p-2 rounded-full bg-muted cursor-pointer hover:opacity-80 disabled:opacity-50 

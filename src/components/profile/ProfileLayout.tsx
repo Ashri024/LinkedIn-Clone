@@ -47,7 +47,7 @@ if (!profile) {
           <ProfileSummary profile={profile} isOwner={isOwner} />
           <ProfileAbout />
           <ProfileFeatured />
-          <ProfileActivity />
+          <ProfileActivity userId={profile?._id} isOwner={isOwner} />
           <ProfileExperience />
           <ProfileEducation />
           <ProfileSkills />

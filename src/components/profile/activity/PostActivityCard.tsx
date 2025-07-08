@@ -13,7 +13,7 @@ import { uploadedTimeAgo } from '@/lib/utils';
 import { IoMdGlobe } from 'react-icons/io';
 import DefaultImage from '@/../public/default-profile.svg'; // Adjust the path as necessary
 
-function PostActivityCard({post}:{post:PostCardProps}) {
+function PostActivityCard({post, isOwner}:{post:PostCardProps, isOwner: boolean}) {
   const router = useRouter();
     const name = post?.author?.firstName + ' ' + post?.author?.lastName;
   return (
@@ -33,7 +33,7 @@ function PostActivityCard({post}:{post:PostCardProps}) {
             <div className="text-sm">
               <div className="font-semibold text-theme flex items-end gap-1">
                {name}
-                <span className="text-xs text-muted-foreground">• You</span>
+               {isOwner&& <span className="text-xs text-muted-foreground">• You</span>}
               </div>
               <div className="text-xs text-muted-foreground line-clamp-1">{post?.author?.headline}</div>
               <div className="flex gap-1 items-center text-muted-foreground ">
@@ -71,6 +71,16 @@ function PostActivityCard({post}:{post:PostCardProps}) {
               /> */}
         </div>
 }
+
+        {post.video && (
+          <div className="mt-3">
+            <video
+              src={post.video}
+              controls
+              className="rounded-md max-h-[300px] w-full object-cover"
+            />
+          </div>
+        )}
         {/* Reactions */}
         <div className="px-3 pb-3 flex justify-between text-xs text-muted-foreground mt-2">
           <span>👍 {post.likes?.length} • {post.comments?.length} comments</span>
