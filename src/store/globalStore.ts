@@ -15,6 +15,11 @@ export interface SearchPeopleResult {
   headline: string;
   profileImageUrl: string;
 }
+export type UploadingPostState = {
+  status: 'pending' | 'success' | 'error' | null;
+  message?: string;
+  progress?: number; // optional, for future use
+};
 
 export interface SearchPostResult {
   _id: string;
@@ -34,9 +39,12 @@ interface GlobalStore {
   setSearchPeopleResults: (results: SearchPeopleResult[]) => void;
   searchPostResults: SearchPostResult[];
   setSearchPostResults: (results: SearchPostResult[]) => void;
-  profile: IProfile|null;
-  setProfile: (profile: IProfile) => void;
-  fetchProfile: () => Promise<void>;
+  globalProfile: IProfile|null;
+  setGlobalProfile: (profile: IProfile) => void;
+  fetchGlobalProfile: () => Promise<void>;
+  uploadingPost: UploadingPostState;
+  setUploadingPost: (state: UploadingPostState) => void;
+  clearUploadingPost: () => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -50,13 +58,16 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
   setSearchPeopleResults: (results) => set({ searchPeopleResults: results }),
   searchPostResults: [],
   setSearchPostResults: (results) => set({ searchPostResults: results }),
-  profile: null,
-  setProfile: (profile) => set({ profile }),
-  fetchProfile: async () => {
+  globalProfile: null,
+  setGlobalProfile: (profile) => set({ globalProfile: profile }),
+  fetchGlobalProfile: async () => {
     const res = await fetch('/api/profile');
     if (res.ok) {
       const data = await res.json();
-      set({ profile: data });
+      set({ globalProfile: data });
     }
   },
+  uploadingPost: { status: null },
+setUploadingPost: (state) => set({ uploadingPost: state }),
+clearUploadingPost: () => set({ uploadingPost: { status: null } }),
 }));

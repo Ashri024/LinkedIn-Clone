@@ -8,6 +8,7 @@ import { RemoveConnectionDialog } from './RemoveConnectionDialog'; // Dialog Com
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import Link from 'next/link';
 import { formatProfileURL } from '@/lib/formatProfileURL';
+import DefaultProfile from '@/../public/default-profile.svg'; // Adjust the path as necessary
 
 export type ConnectionCardProps = {
     _id: string;
@@ -29,9 +30,9 @@ function ConnectionCard({ data, setSafeInvitationsState }: { data: ConnectionCar
   return (
     <div className="flex items-center justify-between border-b pb-4">
         <div className="flex items-center gap-3">
-          <Link href={`/profile/${formatProfileURL(data.firstName, data.lastName, data._id)}`} className='cursor-hover '>
+          <Link href={`/profile/${formatProfileURL( data._id, data.firstName, data.lastName)}`} className='cursor-hover '>
           <Image
-            src={data.profileImageUrl}
+            src={data.profileImageUrl || DefaultProfile}
             alt={`${data.firstName}'s profile`}
             width={48}
             height={48}
@@ -39,7 +40,7 @@ function ConnectionCard({ data, setSafeInvitationsState }: { data: ConnectionCar
             />
             </Link>
           <div>
-          <Link href={`/profile/${formatProfileURL(data.firstName, data.lastName, data._id)}`} className='cursor-hover font-semibold hover:underline'>
+          <Link href={`/profile/${formatProfileURL( data._id, data.firstName, data.lastName)}`} className='cursor-hover font-semibold hover:underline'>
             <p><span >{name}</span></p>
           </Link>
             <p className="text-sm text-muted-foreground">{data.headline}</p>

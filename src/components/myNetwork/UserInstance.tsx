@@ -12,7 +12,7 @@ export type FollowSchema = {
   profileImageUrl: string;
 };
 function UserInstance({ follower, isFollowing }: { follower: FollowSchema, isFollowing?: boolean }) {
-    const profileSlug = `/profile/${formatProfileURL(follower.firstName, follower.lastName || 'l', follower._id)}`;
+    const profileSlug = `/profile/${formatProfileURL(follower._id, follower.firstName, follower.lastName)}`;
     return (
    <div key={follower._id} className="flex items-center justify-between border-b pb-4">
                 <div className="flex items-center gap-4">

@@ -5,35 +5,40 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { BadgeCheck } from "lucide-react";
 import { Session } from "next-auth";
+import DefaultImage from '@/../public/default-profile.svg'; // Adjust the path as necessary
+import { useGlobalStore } from "@/store/globalStore";
 
 type Props = {
   user?: Session["user"];
 };
 
 export const FeedSidebar = ({ user }: Props) => {
+  const globalProfile = useGlobalStore((state) => state.globalProfile);
+  const name = user?.firstName + (user?.lastName ? " " + user?.lastName : "");
+  const location = globalProfile?.location?.city + (globalProfile?.location?.countryRegion ? ", " + globalProfile?.location?.countryRegion : "");
   return (
-    <Card className="bg-white dark:bg-backgroundC-dark p-4 rounded-xl shadow-sm text-theme flex flex-col gap-4">
+    <Card className="bg-white dark:bg-backgroundC-dark p-4 rounded-md shadow-none text-theme flex flex-col gap-4 border-none">
       {/* Profile Card */}
       <div className="text-center">
         <Image
-          src={user?.image || "https://res.cloudinary.com/djnhadxeb/image/upload/v1750766650/vecteezy_man-empty-avatar-vector-photo-placeholder-for-social_36594092_syrkdk.jpg"}
+          src={user?.image || DefaultImage}
           alt="profile"
           width={80}
           height={80}
           className="mx-auto rounded-full"
         />
         <h3 className="font-semibold text-lg mt-2 flex items-center justify-center gap-1">
-          {user?.firstName || "Ashri"} {user?.lastName || "Mallick"}
-          <BadgeCheck className="w-4 h-4 text-blue-500" />
+          {name || "User Name"}
+          <BadgeCheck className="w-5 h-5 text-primaryC" />
         </h3>
         <p className="text-sm text-muted-foreground mt-1">
-          MERN stack developer | UI/UX Designer | Next.js...
+         {globalProfile?.headline || "No Headline"}
         </p>
         <p className="text-xs mt-1 text-muted-foreground">
-          Prayagraj, Uttar Pradesh
+          {location || "No Location"}
         </p>
         <p className="text-xs font-medium text-primary mt-1">
-          🎓 Manipal University Jaipur
+          🎓 {globalProfile?.workingAt}
         </p>
       </div>
 

@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { useGlobalStore } from '@/store/globalStore';
 
 export default function ProfileProvider({ children }: { children: React.ReactNode }) {
-  const fetchProfile = useGlobalStore((state) => state.fetchProfile);
+  const fetchGlobalProfile = useGlobalStore((state) => state.fetchGlobalProfile);
   useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
+    fetchGlobalProfile();
+  }, [fetchGlobalProfile]);
 
   return <>{children}</>;
 }

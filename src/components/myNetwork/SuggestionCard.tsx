@@ -23,9 +23,9 @@ function SuggestionCard({ data, isFollowing, connected }: {data:SuggestionCardPr
   return (
     <Link href={
       `/profile/${formatProfileURL(
+        data._id,
         data.firstName,
-        data.lastName || '',
-        data._id
+        data.lastName,
       )}`} className=" flex-shrink-0 border rounded-md p-3 dark:bg-backgroundC-dark cursor-pointer h-[300px] xl:h-[270px] justify-between flex flex-col">
         <div>
           <div className="relative flex justify-center">

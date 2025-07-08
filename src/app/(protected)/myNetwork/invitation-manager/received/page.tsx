@@ -2,6 +2,7 @@ import InvitationCard from '@/components/myNetwork/InvitationCard'
 // import { mockInvitations } from '@/components/myNetwork/InvitationSection'
 import { authOptions } from '@/lib/authOptions';
 import { getIncomingRequests } from '@/lib/db/backend/connection';
+import { getFollowers } from '@/lib/db/backend/follower';
 // import { getFollowers } from '@/lib/db/backend/follower';
 import { getServerSession } from 'next-auth';
 import React from 'react'
@@ -20,12 +21,16 @@ async function ReceivedPage() {
       followsYou: !!doc.followsYou || false, // Optional field, default to false if not present
     } ;
   });
+  const followersData = await getFollowers(session?.user?._id || '');
+  const followers = followersData?.followers || [];
+  const followersIds = followers.map((f) => f._id.toString());
   return (
     <div className='space-y-4 '>
     {safeInvitations.length>0?
     safeInvitations.map((invite) => (
       <InvitationCard key={invite._id} data={invite} 
-      // followsYou={followersIds.includes(invite._id) ? true : false}
+     
+      followsYou={followersIds.includes(invite._id) ? true : false}
       />
     )):
     <div className="text-muted-foreground text-sm">

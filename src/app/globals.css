@@ -240,10 +240,8 @@ body{
 
 /* HTML: <div class="loader"></div> */
 .loader {
-  width: 40px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 6px solid #fff;
   animation:
     l20-1 0.8s infinite linear alternate,
     l20-2 1.6s infinite linear;
@@ -262,4 +260,16 @@ body{
   49.99%{transform:scaleY(1)  rotate(135deg)}
   50%   {transform:scaleY(-1) rotate(0deg)}
   100%  {transform:scaleY(-1) rotate(-135deg)}
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

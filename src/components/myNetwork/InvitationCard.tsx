@@ -1,11 +1,12 @@
 // src/components/myNetwork/InvitationCard.tsx
 'use client';
 
-import { usePeopleFollow } from '@/app/providers/PeopleFollowContext';
+// import { usePeopleFollow } from '@/app/providers/PeopleFollowContext';
 import { formatProfileURL } from '@/lib/formatProfileURL';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import DefaultProfile from '@/../public/default-profile.svg'; // Adjust the path as necessary
 
 export type InvitationCardProps = {
   _id: string; // sender's id
@@ -15,11 +16,9 @@ export type InvitationCardProps = {
   profileImageUrl: string;
 };
 
-function InvitationCard({ data }: { data: InvitationCardProps }) {
+function InvitationCard({ data,followsYou }: { data: InvitationCardProps , followsYou?: boolean}) {
   const [status, setStatus] = useState<'pending' | 'accepted' | 'ignored'>('pending');
   const [loading, setLoading] = useState(false);
-  const {followersIds} = usePeopleFollow();
-  const followsYou = followersIds?.includes(data._id) || false; // Check if the sender follows you
   const name = `${data.firstName} ${data.lastName || ''}`; // Combine first and last name for display
   const handleAccept = async () => {
     setLoading(true);
@@ -44,9 +43,9 @@ function InvitationCard({ data }: { data: InvitationCardProps }) {
   return (
     <div className="flex items-center justify-between border-b pb-4">
       <div className="flex items-center gap-3">
-      <Link href={`/profile/${formatProfileURL(data.firstName, data.lastName ||"l", data._id)}`} className='cursor-hover '>
+      <Link href={`/profile/${formatProfileURL(data._id, data.firstName, data?.lastName )}`} className='cursor-hover '>
         <Image
-          src={data.profileImageUrl}
+          src={data.profileImageUrl || DefaultProfile}
           alt={`${data.firstName}'s profile`}
           width={48}
           height={48}
@@ -55,7 +54,7 @@ function InvitationCard({ data }: { data: InvitationCardProps }) {
       </Link>
         <div>
           <p className="">
-          <Link href={`/profile/${formatProfileURL(data.firstName, data.lastName || "l", data._id)}`} className='cursor-hover font-semibold hover:underline'>{name}</Link>
+          <Link href={`/profile/${formatProfileURL( data._id, data.firstName, data?.lastName,)}`} className='cursor-hover font-semibold hover:underline'>{name}</Link>
             {followsYou && ' follows you and is inviting you to connect'}
           </p>
           <p className="text-sm text-muted-foreground">{data.headline}</p>

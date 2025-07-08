@@ -45,7 +45,7 @@ I'm currently exploring more web technologies to expand my skills and stay updat
           )}
         </div>
 
-        <div className=" rounded-lg p-2 px-4 border border-white/20 flex gap-2">
+        <div className=" rounded-md p-2 px-4 border border-white/20 flex gap-2">
           <IoDiamondOutline size={20} className="mt-1" />
           <div className='flex flex-col gap-0'>
             <h4 className="font-medium text-theme flex items-center gap-2 text-base">

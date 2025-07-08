@@ -23,7 +23,7 @@ export function MobileHeader() {
 
   const setSearchPostResults = useGlobalStore((state) => state.setSearchPostResults);
   const searchText = useGlobalStore((state) => state.searchText);
-  const profile = useGlobalStore((state) => state.profile);
+  const profile = useGlobalStore((state) => state.globalProfile);
   const router = useRouter();
   const searchTabletRef = useRef<HTMLInputElement>(null);
 
@@ -67,7 +67,7 @@ export function MobileHeader() {
 const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.stopPropagation(); 
     if (e.key === 'Enter') {
-        console.log('Search submitted:', searchText);
+        // console.log('Search submitted:', searchText);
         
         const encodedSearchText = encodeURIComponent(searchText.trim());
         if (searchText.trim() !== "") {

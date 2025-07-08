@@ -5,6 +5,7 @@ import { formatProfileURL } from '@/lib/formatProfileURL';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import DefaultProfile from '@/../public/default-profile.svg'; // Adjust the path as necessary
 
 export type ConnectionSentCardProps = {
   _id: string; // receiver's id
@@ -42,9 +43,9 @@ function ConnectionSentCard({ data ,withdrawnS}: { data: ConnectionSentCardProps
   return (
     <div className="flex items-center justify-between border-b pb-4">
       <div className="flex items-center gap-3">
-      <Link href={`/profile/${formatProfileURL(data.firstName, data.lastName ||"l", data._id)}`} className='cursor-hover '>
+      <Link href={`/profile/${formatProfileURL( data._id, data.firstName, data?.lastName)}`} className='cursor-hover '>
         <Image
-          src={data.profileImageUrl}
+          src={data.profileImageUrl || DefaultProfile}
           alt={`${name}'s profile`}
           width={48}
           height={48}
@@ -52,7 +53,7 @@ function ConnectionSentCard({ data ,withdrawnS}: { data: ConnectionSentCardProps
         />
       </Link>
         <div>
-        <Link href={`/profile/${formatProfileURL(data.firstName, data.lastName || "l", data._id)}`} className='cursor-hover font-semibold hover:underline'>
+        <Link href={`/profile/${formatProfileURL(data._id, data.firstName, data?.lastName )}`} className='cursor-hover font-semibold hover:underline'>
           <p className=""><span className='font-semibold'>{name}</span></p>
         </Link>
           <p className="text-sm text-muted-foreground">{data.headline}</p>

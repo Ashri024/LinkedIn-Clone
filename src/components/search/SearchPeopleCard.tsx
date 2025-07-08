@@ -15,7 +15,7 @@ export interface SearchPeopleCardProps {
     const name = `${firstName} ${lastName || ""}`.trim();
     return (
       <Link href={`/profile/${formatProfileURL(  
-        firstName, lastName||'l', _id
+        _id,firstName, lastName, 
       )}`} className="flex gap-4 items-center p-4 hover:bg-muted rounded-md border-b group">
         <Image
           src={profileImageUrl || DefaultImage }

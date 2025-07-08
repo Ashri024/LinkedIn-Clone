@@ -7,7 +7,6 @@ export interface IPost extends Document {
   images?: string[];  // Max 4 images
   video?: string;     // Single video
   likes: mongoose.Types.ObjectId[]; // array of user ids who liked
-  reposts: number;
   comments: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
@@ -39,10 +38,6 @@ const PostSchema = new Schema<IPost>(
         ref: "Profile",
       },
     ],
-    reposts: {
-      type: Number,
-      default: 0,
-    },
     comments: [
       {
         type: Schema.Types.ObjectId,

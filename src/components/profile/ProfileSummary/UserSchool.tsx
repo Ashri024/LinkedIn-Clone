@@ -8,7 +8,7 @@ function UserSchool(
 ) {
   if (!initialProfile.workingAt) return null;
   return (
-    <div className='absolute top-0 right-16 flex gap-2 items-center justify-center cursor-pointer'>
+    <div className='hidden absolute top-0 right-16 sm:flex gap-2 items-center justify-center cursor-pointer'>
     <Image
     src={DefaulCompany}
     alt="profile-image"

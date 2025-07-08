@@ -20,6 +20,7 @@ export const ProfileSummary = ({profile, isOwner}: {profile: IProfile, isOwner: 
         <UserAbout 
         isOwner={isOwner}
         initialProfile={profile}/>
+        
         <UserSchool
         initialProfile={profile}
         />

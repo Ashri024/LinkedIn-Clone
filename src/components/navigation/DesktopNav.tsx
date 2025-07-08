@@ -50,7 +50,7 @@ export function DesktopNav() {
     const setSearchResults = useGlobalStore((state) => state.setSearchResults);
     const searchText = useGlobalStore((state) => state.searchText);
     const searchTabletRef = useRef<HTMLInputElement>(null);
-    const profile = useGlobalStore((state) => state.profile);
+    const profile = useGlobalStore((state) => state.globalProfile);
     const router = useRouter();
     useEffect(() => {
         if (searchState && searchTabletRef.current) {
@@ -99,7 +99,7 @@ export function DesktopNav() {
     const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         e.stopPropagation(); 
         if (e.key === 'Enter') {
-            console.log('Search submitted:', searchText);
+            // console.log('Search submitted:', searchText);
             
             const encodedSearchText = encodeURIComponent(searchText.trim());
             if (searchText.trim() !== "") {

@@ -4,9 +4,14 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Pencil } from "lucide-react";
 import { HiMiniUserPlus } from "react-icons/hi2";
 import { Button } from "../ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { formatProfileURL } from "@/lib/formatProfileURL";
 
 export const ProfileSidebar = () => {
+  const {data: session} = useSession();
+  if ( !session?.user || !session?.user?._id) return null; // Ensure session is available before rendering
+  const BaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   return (
     <div className="space-y-2 w-full">
       <div className="space-y-0">
@@ -31,8 +36,12 @@ export const ProfileSidebar = () => {
             </h3>
             <Pencil className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground break-all">
-            www.linkedin.com/in/ashri-mallick-1a04111bb
+          <CardContent className="text-sm break-all">
+            <Link href={
+              BaseUrl ? `${BaseUrl}/profile/${formatProfileURL(session?.user?._id, session?.user?.firstName, session?.user?.lastName)}` : "#"
+            } className="linkedIn-link">
+            {BaseUrl ? BaseUrl + "/profile/"+formatProfileURL(session?.user?._id, session?.user?.firstName, session?.user?.lastName  ):"No Url" }
+            </Link>
           </CardContent>
         </Card>
       </div>

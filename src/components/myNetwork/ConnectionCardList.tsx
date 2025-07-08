@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import ConnectionCard, { ConnectionCardProps } from './ConnectionCard'
+import NoContentCard from './NoContentCard';
 
 function ConnectionCardList({safeInvitations}: {safeInvitations: ConnectionCardProps[]}) {
     const [safeInvitationsState, setSafeInvitationsState] = useState<ConnectionCardProps[]>(safeInvitations);
@@ -16,9 +17,7 @@ function ConnectionCardList({safeInvitations}: {safeInvitations: ConnectionCardP
             safeInvitationsState.map((connection) => (
             <ConnectionCard key={connection._id} data={connection} setSafeInvitationsState={setSafeInvitationsState} />
             )):
-            <div className="text-muted-foreground text-sm">
-            No connections found.
-            </div>
+            <NoContentCard text="You have no connections yet. Connect with people to see them here." />
             }
         </div>
       </>

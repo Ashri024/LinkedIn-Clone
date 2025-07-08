@@ -1,11 +1,13 @@
 "use client";
 import { usePeopleFollow } from '@/app/providers/PeopleFollowContext';
 import UserInstance from '@/components/myNetwork/UserInstance';
+import NoContentCard from '@/components/myNetwork/NoContentCard';
 
 export default function FollowersPage() {
   const {followers, followingIds} = usePeopleFollow();
 
-  return (
+  return <>
+    {followers.length >0 ?
     <>
       <p className="text-sm text-muted-foreground mb-4">{followers.length} people are following you</p>
 
@@ -17,6 +19,9 @@ export default function FollowersPage() {
         })}
       </div>
     </>
-  );
+   : (
+    <NoContentCard text="You have no followers yet." />
+  )}
+  </>
 }
 

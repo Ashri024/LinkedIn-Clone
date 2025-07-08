@@ -1,17 +1,13 @@
-// src/app/(protected)/feed/page.tsx
-'use client';
 
-import { useSession } from 'next-auth/react';
 import { FeedSidebar } from '@/components/feed/Sidebar';
-import { PostInput } from '@/components/feed/PostInput';
-import { PostCard } from '@/components/feed/PostCard';
 import { NewsPanel } from '@/components/feed/NewsPanel';
-import { postsData } from '@/data/feed/postsData';
 import Container from '@/components/Container';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
+import PostComponent from '@/components/post/PostComponent';
 
-export default function FeedPage() {
-  const { data: session } = useSession();
-
+export default async function FeedPage() {
+  const session = await getServerSession(authOptions)
   return (
     <Container>
         {/* Left Sidebar */}
@@ -21,13 +17,8 @@ export default function FeedPage() {
         </aside>
 
         {/* Main Feed */}
-        <section className="flex-1 w-full mx-auto flex flex-col gap-4">
-        {/* <section className="flex-1 w-full max-w-[640px] mx-auto flex-col gap-4 hidden"> */}
-          <PostInput />
-          {postsData.map(post => (
-            <PostCard key={post.id} {...post} />
-          ))}
-        </section>
+       
+          <PostComponent/>
 
         {/* Right News Panel */}
         <aside className="hidden lg:block w-full max-w-[300px]">

@@ -91,7 +91,7 @@ export default function OnboardingForm({ sessionImage, prefillData }: Props) {
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] px-4">
-      <div className="w-full max-w-md space-y-6 p-6 rounded-lg shadow bg-white dark:bg-backgroundC-dark">
+      <div className="w-full max-w-md space-y-6 p-6 rounded-md shadow bg-white dark:bg-backgroundC-dark">
         <h1 className="text-2xl font-semibold text-center">Complete Your Profile</h1>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmitFinal)} className="space-y-4">

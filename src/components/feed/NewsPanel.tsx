@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 
 export const NewsPanel = () => {
   return (
-    <Card className="bg-white dark:bg-backgroundC-dark p-4 rounded-xl shadow-sm text-theme space-y-3">
+    <Card className="bg-white dark:bg-backgroundC-dark p-4 rounded-md shadow-sm text-theme space-y-3 border-none">
       <h3 className="font-semibold">LinkedIn News</h3>
 
       <ul className="space-y-2 text-sm text-muted-foreground">

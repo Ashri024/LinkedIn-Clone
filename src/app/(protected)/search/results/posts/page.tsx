@@ -33,7 +33,7 @@ export default function PostsSearchPage({ searchParams }: { searchParams: Promis
 
   return (
     <div className="space-y-6">
-      <section className="dark:bg-backgroundC-dark p-4 rounded-lg">
+      <section className="dark:bg-backgroundC-dark p-4 rounded-md">
         <h3 className="text-lg font-semibold mb-2">Posts</h3>
         {searchPostResults.length > 0
           ? searchPostResults.map((post) => (

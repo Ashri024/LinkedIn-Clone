@@ -18,7 +18,7 @@ export default function OnboardingPage() {
 
   useEffect(() => {
     if (status === 'loading') return;
-    console.log('Session userAuthStep /onboarding:', session?.user?.authStep);
+    // console.log('Session userAuthStep /onboarding:', session?.user?.authStep);
     runCheckAndRedirect({
       email,
       password,

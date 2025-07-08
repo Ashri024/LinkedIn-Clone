@@ -124,6 +124,23 @@ export async function sendConnectionRequest(senderId: string, receiverId: string
       String(c.sender._id) === userId ? c.receiver : c.sender
     );
   }
+// Get All ConnectionsIds of User
+  export async function getConnectionsIds(userId: string) {
+    await connectDB();
+  
+    const connections = await Connection.find({
+      $or: [
+        { sender: userId, status: 'accepted' },
+        { receiver: userId, status: 'accepted' }
+      ]
+    }).populate('sender receiver');
+
+    // console.log('Connections from backend:', connections);
+    // Flatten into "connected user"
+    return connections.map((c) =>
+      String(c.sender._id) === userId ? c.receiver._id.toString() : c.sender._id.toString()
+    );
+  }
 
 // Get A single connection between two users
 export async function getConnection(userId1: string, userId2: string) {

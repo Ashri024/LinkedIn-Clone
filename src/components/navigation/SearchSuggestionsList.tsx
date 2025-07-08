@@ -8,10 +8,11 @@ import { useGlobalStore } from "@/store/globalStore";
 export default function SearchSuggestionsList() {
   const searchText = useGlobalStore((state) => state.searchText);
   const searchResults = useGlobalStore((state) => state.searchResults);
+  const searchState = useGlobalStore((state) => state.searchState);
   const setSearchState = useGlobalStore((state) => state.setSearchState);
   const setSearchText = useGlobalStore((state) => state.setSearchText);
 
-  if (!searchText || searchResults.length === 0) return null;
+  if (!searchText || searchResults.length === 0 || !searchState) return null;
 
   return (
     <div className="absolute top-full left-0 mt-0 w-full md:min-w-[500px] bg-white dark:bg-backgroundC-dark border rounded-md shadow-lg z-50">
@@ -44,7 +45,7 @@ export default function SearchSuggestionsList() {
         <li>
           <Link
             href={`/search/results/all?keywords=${encodeURIComponent(searchText)}`}
-            className="block text-center text-sm text-blue-600 py-2 hover:underline"
+            className="block linkedIn-link text-center py-2  "
             onClick={(e) => {
               e.stopPropagation(); 
               setSearchState(false); // Close search suggestions

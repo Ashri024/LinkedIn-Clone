@@ -10,8 +10,12 @@ function NetworkSidebar() {
   const {data:session} = useSession();
   const [connectionsNumber, setConnectionsNumber] = useState(0);
   useEffect(() => {
+    console.log("Fetching connections count for user ID:", session?.user?._id);
     // Simulate fetching connections count from an API
     const fetchConnectionsCount = async () => {
+      if (!session?.user?._id) {
+        return;
+      }
       try {
         const response = await fetch(`/api/connection/count/${session?.user?._id}`); // Replace with your API endpoint
         if (response.ok) {
@@ -29,7 +33,7 @@ function NetworkSidebar() {
     fetchConnectionsCount();
   }, [session?.user?._id]);
   return (
-    <div className=" w-full bg-white dark:bg-backgroundC-dark rounded-lg">
+    <div className=" w-full bg-white dark:bg-backgroundC-dark rounded-md">
       <h3 className="font-semibold border-b py-4 px-4">Manage my network</h3>
       <div className="space-y-0 text-muted-foreground font-semibold ">
         <Link href="/myNetwork/invite-connect/connections/" className="flex hover:bg-white/10 transition justify-between py-3 px-4">
