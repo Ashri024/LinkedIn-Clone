@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/lib/authOptions';
 import { userExistStatus } from '@/lib/db/backend/user';
+import LoaderComponent from '@/components/LoaderComponent';
 
 export default async function ProtectedIndexPage() {
   const session = await getServerSession(authOptions);
@@ -16,4 +17,6 @@ export default async function ProtectedIndexPage() {
   } else {
     redirect('/feed');
   }
+
+  return <LoaderComponent/>
 }

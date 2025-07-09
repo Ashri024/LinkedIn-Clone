@@ -130,7 +130,7 @@ export function DesktopNav() {
                     <Input
                         type="text"
                         placeholder="Search"
-                        className="pl-10 bg-backgroundC-light dark:bg-backgroundC-dark placeholder:text-slate-400 focus-visible:ring-0 border rounded-3xl border-slate-400 focus-visible:border-slate-200 transition-all duration-300 focus-visible:w-[350px] xl:focus-visible:w-[450px] w-full"
+                        className="pl-10 bg-white dark:bg-backgroundC-dark placeholder:text-slate-400 focus-visible:ring-0 border rounded-3xl border-slate-400 focus-visible:border-slate-200 transition-all duration-300 focus-visible:w-[350px] xl:focus-visible:w-[450px] w-full"
                         onClick={(e) => {
                             e.stopPropagation(); 
                             setSearchState(true); 

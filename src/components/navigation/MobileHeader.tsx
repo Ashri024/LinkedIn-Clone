@@ -82,7 +82,7 @@ const handleSearchEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     }
 }
   return (
-    <header className="flex items-center justify-between md:hidden p-3 bg-backgroundC-light dark:bg-backgroundC-dark sticky top-0 z-50 border-b">
+    <header className="flex items-center justify-between md:hidden p-3 bg-white dark:bg-backgroundC-dark sticky top-0 z-50 border-b">
       <div className="flex-center gap-2 w-full">
         <Link href={`/profile/${profile?.firstName.toLowerCase()}-${profile?.lastName.toLowerCase()}-${profile?._id}`}
          className="flex items-center gap-2">

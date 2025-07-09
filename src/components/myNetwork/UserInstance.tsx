@@ -18,7 +18,7 @@ function UserInstance({ follower, isFollowing }: { follower: FollowSchema, isFol
                 <div className="flex items-center gap-4">
                   <Link href={profileSlug}>
                     <Image
-                      src={DefaultProfile}
+                      src={follower?.profileImageUrl|| DefaultProfile}
                       alt={`${follower.firstName}'s avatar`}
                       width={48}
                       height={48}

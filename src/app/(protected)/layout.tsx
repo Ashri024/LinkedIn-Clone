@@ -22,7 +22,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
     redirect('/auth/onboarding/more-details'); // User exists but needs more details
   } 
   return (  
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen theme-background flex flex-col">
     <ProfileProvider>
       <MobileHeader />
       <DesktopNav />
