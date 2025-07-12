@@ -34,15 +34,18 @@ export interface PostCardProps {
 }
 
 export const PostCard = ({post}: {post:PostCardProps}) => {
-  const name = post.author.firstName + (post.author.lastName ? " " + post.author.lastName : "");
-
+  const name = post.author? post?.author?.firstName + (post?.author?.lastName ? " " + post?.author?.lastName : "") : "Unknown User";
+  
+  if (!post?.author?._id){
+    return null;
+  }
   return (
     <Card className="bg-white dark:bg-backgroundC-dark text-theme shadow-sm rounded-md overflow-hidden py-0 border-none">
       <CardContent className="p-4">
         {/* Top */}
         <div className="flex gap-3 items-start">
           <Image
-            src={post.author.profileImageUrl || DefaultImage}
+            src={post?.author?.profileImageUrl || DefaultImage}
             alt={name || "User Avatar"}
             width={50}
             height={50}
@@ -57,10 +60,10 @@ export const PostCard = ({post}: {post:PostCardProps}) => {
                 • 1st
               </span>
             </div>
-            <p className="text-xs text-muted-foreground">{post.author.headline}</p>
+            <p className="text-xs text-muted-foreground">{post?.author?.headline}</p>
             <div className="flex gap-1 items-center text-muted-foreground ">
               <p className="text-xs py-0 ">
-                {uploadedTimeAgo(post.createdAt)}
+                {uploadedTimeAgo(post?.createdAt)}
               </p>
               <div className="flex-center gap-1 h-5">
               • <IoMdGlobe className="inline-block " size={16}/>
@@ -70,17 +73,17 @@ export const PostCard = ({post}: {post:PostCardProps}) => {
         </div>
 
         {/* Text Content */}
-        <div className="mt-3 text-[15px] whitespace-pre-line">{post.content}</div>
+        <div className="mt-3 text-[15px] whitespace-pre-line">{post?.content}</div>
 
         {/* Image */}
-        {post.images && post.images.length > 0 && (
-          <PostImageGallery images={post.images} />
+        {post?.images && post?.images?.length > 0 && (
+          <PostImageGallery images={post?.images} />
         )}
 
-        {post.video && (
+        {post?.video && (
           <div className="mt-3">
             <video
-              src={post.video}
+              src={post?.video}
               controls
               className="rounded-md max-h-[400px] w-full object-cover"
             />
